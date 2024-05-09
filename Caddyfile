@@ -36,8 +36,7 @@
   try_files {path} /index.html
 
   # proxy /api path to shorturlpro-production.up.railway.app
-  @proxy_api {
-    path /api/*
+  handle_path /api/* {
+    reverse_proxy http://shorturlpro-production.up.railway.app
   }
-  reverse_proxy @proxy_api shorturlpro-production.up.railway.app
 }
