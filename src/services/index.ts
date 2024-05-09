@@ -70,9 +70,11 @@ axios.interceptors.response.use((response) => {
   return Promise.reject(response.data)
 }, (error) => {
   if (error.response.status === 401) {
-    toast({
-      title: '登录已过期，请重新登录',
-      icon: 'error',
+    setTimeout(function () {
+      toast({
+        title: '登录已过期，请重新登录',
+        icon: 'error',
+      })
     })
     removeToken()
     if (redirecting) {
