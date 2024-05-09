@@ -47,6 +47,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER_NAME }}
           port: ${{ secrets.PORT }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.KEY }}
           source: './dist'
-          target: /home/servers/trip
+          target: /root/trip
