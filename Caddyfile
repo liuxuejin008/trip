@@ -25,7 +25,7 @@
 
   # proxy /api path to shorturlpro-production.up.railway.app
   handle_path /api/* {
-    reverse_proxy https://shorturlpro-production.up.railway.app
+    reverse_proxy https://short_url_pro.railway.internal
   }
   handle {
     # serve from the 'dist' folder (Vite builds into the 'dist' folder)
