@@ -108,12 +108,12 @@ type CardItemProps = {
   setDisabled: (disabled: boolean) => void
 }
 function CardItem(props: CardItemProps) {
+  const $container = useRef<HTMLDivElement>(null)
   const { item, data, index, setData, disabled, setDisabled } = props
   const [isEdit, setIsEdit] = useState(false)
   const dayCount = numberToChinese(index + 1)
   const { toast, dismiss } = useToast()
   const $content = useRef<HTMLDivElement>(null)
-
   // 是否可以删除，如果不止一天，则可以删除
   const isShowMinus = index !== 0 || data && data.tralineInfoList?.length > 1
 
@@ -212,8 +212,26 @@ function CardItem(props: CardItemProps) {
     setData({ ...data, tralineInfoList: list })
   }
 
+  
+  useEffect(function () {
+    if ($container.current && props.data?.status === 3) {
+      setTimeout(() => {
+        $container.current!.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }, [])
+
+  useEffect(function () {
+    if (props.disabled) {
+      $content.current!.scroll({
+        top: $content.current!.scrollHeight,
+        // behavior: 'smooth'
+      })
+    }
+  }, [props.item.content])
+
   return (
-    <div className="relative w-[1146px] box-border flex flex-col px-16 py-11 rounded-20 bg-primary-light">
+    <div ref={$container} className="relative w-[1146px] box-border flex flex-col px-16 py-11 rounded-20 bg-primary-light">
       <div className="mt-20 flex items-center justify-between">
         <div className="text-48 text-white font-medium ml-6">第{dayCount}天</div>
         <div className="ml-20 text-white">
@@ -229,7 +247,7 @@ function CardItem(props: CardItemProps) {
       <div ref={$content} contentEditable={isEdit} onBlur={onSave} dangerouslySetInnerHTML={{ __html: normalizeContent(item.content) }} className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
       </div>
       {false && <Recommend />}
-      <button onClick={addDate} disabled={disabled} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
+      {false && <button onClick={addDate} disabled={disabled} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>}
       {isShowMinus && <IconMinus onClick={onDelete} className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />}
     </div>
   )

@@ -14,13 +14,13 @@ export default function GenerateResult() {
   const timer = useRef<number | null>(null)
 
   function startLoop() {
-    return new Promise(async function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       async function loop() {
         try {
           const result = await getTravelLineInfoById(params.id!)
           setResult(result)
           if (result.status === 3) {
-            timer.current = setTimeout(loop, 1000)
+            timer.current = setTimeout(loop, 300)
           } else {
             timer.current && clearTimeout(timer.current)
             timer.current = null
