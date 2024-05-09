@@ -25,7 +25,7 @@ export default function Result(props: ResultProps) {
         <div className="flex flex-col items-center">
           <Actions disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
           <CardList disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
-          <Rate />
+          {false && <Rate />}
           <ShareButton/>
         </div>
       </div>
