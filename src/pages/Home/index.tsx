@@ -4,6 +4,7 @@ import IMAGE_BG from '@/assets/images/home_bg.png'
 import IconGo from '@/components/Icons/Go'
 import PhoneLogin from '../../components/Auth/Phone'
 import { isLogin as _isLogin,  setToken } from '@/utils/token'
+import type { Token } from '@/utils/token'
 import { useNavigate } from 'react-router-dom'
 
 function AddressInput() {
@@ -22,7 +23,7 @@ function ProfileButton () {
   const navigate = useNavigate()
 
   return (
-    <button onClick={() => navigate('/user')} className="bg-primary-light text-white flex items-center justify-center w-[150px] h-[60px] rounded-30 shadow-button font-medium text-24 outline-none mt-11 hover:bg-primary transition-bg">个人中心</button>
+    <button onClick={() => navigate('/user/settings')} className="bg-primary-light text-white flex items-center justify-center w-[150px] h-[60px] rounded-30 shadow-button font-medium text-24 outline-none mt-11 hover:bg-primary transition-bg">个人中心</button>
   )
 }
 
@@ -30,7 +31,7 @@ export default function Home() {
   const [open, setOpen] = useState<boolean>(false)
   const [isLogin, setIsLogin] = useState(_isLogin())
 
-  function onSuccess (token: string) {
+  function onSuccess (token: Token) {
     setToken(token)
     setIsLogin(true)
     setOpen(false)

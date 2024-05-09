@@ -7,6 +7,7 @@ import Dialog from './BaseDialog'
 import useCountDown from '@/hooks/useCountDown'
 import { sendVerificationCode, phoneLogin } from '@/services/user'
 import { useToast } from '@/components/Toast/use-toast'
+import { Token } from '@/utils/token'
 import cs from 'classnames'
 
 function validatePhoneNumber(phoneNumber: string) {
@@ -85,7 +86,7 @@ const enum STEP {
 type PhoneProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onSuccess: (token: string) => void
+  onSuccess: (token: Token) => void
 }
 export default function Phone(props: PhoneProps) {
   const {toast, dismiss} = useToast()

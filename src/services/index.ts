@@ -1,5 +1,6 @@
 import Axios from 'axios'
-import { getToken } from '@/utils/token'
+import { getToken, removeToken } from '@/utils/token'
+import { toast } from '@/components/Toast/use-toast'
 
 export const axios = Axios.create({
   baseURL: '/api',
@@ -44,15 +45,32 @@ declare module 'axios' {
 
 
 axios.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${getToken()}`
+  config.headers.Authorization = getToken()
   return config
 })
 
 
+let redirecting = false
+
 axios.interceptors.response.use((response) => {
   const data = response.data
-  if (response.status === 401) {
-    console.log('401')
+  return data.data
+}, (error) => {
+  if (error.response.status === 401) {
+    toast({
+      title: '登录已过期，请重新登录',
+      icon: 'error',
+    })
+    removeToken()
+    if (redirecting) {
+      return Promise.reject(error)
+    } else {
+      redirecting = true
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 2000)
+      return Promise.reject(error)
+    }
   }
-  return data
+  return error
 })

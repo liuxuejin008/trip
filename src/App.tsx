@@ -3,7 +3,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { Toaster } from '@/components/Toast/toaster'
 
 const Home = lazy(() => import('./pages/Home'))
@@ -43,10 +43,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <Suspense>
       <RouterProvider router={router} />
       <Toaster />
-    </>
+    </Suspense>
   )
 }
 
