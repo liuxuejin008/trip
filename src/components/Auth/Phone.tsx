@@ -113,9 +113,9 @@ export default function Phone(props: PhoneProps) {
         title: '发送验证码成功',
         icon: 'success',
       })
-    } catch (e) {
+    } catch (e: any) {
       toast({
-        title: '发送验证码失败',
+        title: e.message || '发送验证码失败',
         icon: 'error',
       })
     } finally {
