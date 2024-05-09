@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { getUserInfo } from '@/services/user'
 import type { UserInfo } from '@/services/user'
 import SettingDialog from '@/components/Auth/Setting'
+import { removeToken } from '@/utils/token'
+import { useToast } from '@/components/Toast/use-toast'
 
 type ButtonProps = {
   className?: string
@@ -36,6 +38,7 @@ function ListItem (props: ListItemProps) {
 export default function Settings() {
   const [userInfo, setUserInfo] = useState<UserInfo>()
   const [open, setOpen] = useState(false)
+  const { toast } = useToast()
 
   useEffect(function () {
     getUserInfo().then(setUserInfo)
@@ -45,6 +48,17 @@ export default function Settings() {
     setUserInfo(userInfo)
   }
 
+  function onLogout() {
+    removeToken()
+    toast({
+      title: '退出成功',
+    })
+
+    setTimeout(function () {
+      window.location.href = '/'
+    }, 500)
+  }
+
   return (
     <>
       <div className="text-24">昵称：<span className="ml-6">{userInfo?.nickName || userInfo?.phoneNumber}</span></div>
@@ -52,7 +66,7 @@ export default function Settings() {
         <div className='flex gap-9'>
           <Button onClick={() => setOpen(true)} className="bg-dark-light">修改昵称</Button>
           {/* <Button className="bg-dark-light">修改密码</Button> */}
-          <Button className="bg-error">退出账户</Button>
+          <Button onClick={onLogout} className="bg-error">退出账户</Button>
         </div>
       </div>
       <div className="mt-9">
