@@ -1,4 +1,4 @@
-import { useParams, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import cs from 'classnames'
 
 const menuList = [
@@ -16,9 +16,8 @@ const menuList = [
   }
 ]
 export default function Menu() {
-  const params = useParams<{id: string}>()
   const location = useLocation()
-  const fullPath = (path: string) => `/user/${params.id}/${path}`
+  const fullPath = (path: string) => `/user/${path}`
   const isActive = (path: string) => fullPath(path) === location.pathname
   
   return (

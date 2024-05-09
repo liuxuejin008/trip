@@ -22,19 +22,19 @@ const router = createBrowserRouter([
     element: <Result />
   },
   {
-    path: '/user/:id',
+    path: '/user',
     element: <User />,
     children: [
       {
-        path: '/user/:id/',
+        path: '/user',
         element: <List title='保存的行程' />
       },
       {
-        path: '/user/:id/search',
+        path: '/user/search',
         element: <List title='最近搜索' />
       },
       {
-        path: '/user/:id/settings',
+        path: '/user/settings',
         element: <Settings />
       }
     ]
