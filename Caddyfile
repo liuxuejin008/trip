@@ -37,6 +37,8 @@
 
   # proxy /api path to shorturlpro-production.up.railway.app
   handle_path /api/* {
-    reverse_proxy http://shorturlpro-production.up.railway.app
+    reverse_proxy http://shorturlpro-production.up.railway.app {
+      method *
+    }
   }
 }
