@@ -26,6 +26,7 @@ export default {
         error: '#FF752B/* #FF752B */',
         'error-light': '#FF9055/* #FF9055 */',
         'error-close': '#f87171/* #f87171 */',
+        'error-delete': '#BD2626/* #BD2626 */',
       },
       fontSize: {
         '48': '48px',
