@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, lazy } from 'react'
 import DateRangePicker from '@/components/DateRangePicker'
 import IMAGE_BG from '@/assets/images/home_bg.png'
 import IconGo from '@/components/Icons/Go'
@@ -10,6 +10,8 @@ import type { DateRange } from 'react-day-picker'
 import { getFormateDate } from '@/utils/date'
 import { generateTravelLine } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
+
+const Loading = lazy(() => import('@/components/Loading'))
 
 type AddressInputProps = {
   value?: string
@@ -45,12 +47,13 @@ export default function Home() {
   const [open, setOpen] = useState<boolean>(false)
   const [isLogin, setIsLogin] = useState(_isLogin())
   const [location, setLocation] = useState<string>()
+  const [isGenerating, setIsGenerating] = useState<boolean>(false)
   const [range, setRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date()
   })
   const navigate = useNavigate()
-  const { toast, dismiss } = useToast()
+  const { toast } = useToast()
 
   function onSuccess (token: Token) {
     setToken(token)
@@ -76,7 +79,17 @@ export default function Home() {
       return
     }
 
-    navigate(`/result?location=${location}&startTime=${startTime}&endTime=${endTime}`)
+    try {
+      setIsGenerating(true)
+      const { tralineId } = await generateTravelLine({location, startTime, endTime})
+      navigate(`/result/${tralineId}`)
+    } catch (e) {
+      toast({
+        title: '生成失败',
+        icon: 'error'
+      })
+      setIsGenerating(false)
+    }
   }
 
   return (
@@ -93,6 +106,7 @@ export default function Home() {
         </div>
       </div>
       <PhoneLogin open={open} onOpenChange={setOpen} onSuccess={onSuccess} />
+      {isGenerating && <Loading />}
     </>
   )
 }

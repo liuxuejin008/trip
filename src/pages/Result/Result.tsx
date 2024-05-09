@@ -9,7 +9,6 @@ import type { TravelResult } from '@/services/travel'
 
 type ResultProps = {
   data: TravelResult
-  refresh: () => Promise<TravelResult>
 }
 export default function Result(props: ResultProps) {
   const [result, setResult] = useState<TravelResult>(props.data)
@@ -23,8 +22,8 @@ export default function Result(props: ResultProps) {
       <div className="mb-16">
         <Overview data={result} />
         <div className="flex flex-col items-center">
-          <Actions refresh={props.refresh} data={result} setData={setResult} />
-          <CardList />
+          <Actions data={result} setData={setResult} />
+          <CardList data={result} setData={setResult} />
           <Rate />
           <ShareButton/>
         </div>

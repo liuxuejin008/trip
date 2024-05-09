@@ -2,25 +2,25 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Result from './Result'
 import { useParams } from 'react-router-dom'
 import type { TravelResult } from '@/services/travel'
-import { getTravelLineInfoById, refreshTravelLine } from '@/services/travel'
+import { getTravelLineInfoById } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
-import Loading from '@/components/Loading'
 
 export default function GenerateResult() {
-  const { toast } = useToast()
-  const params = useParams<{id: string}>()
+  const { toast, dismiss } = useToast()
+  const params = useParams<{ id: string }>()
   const isFetching = useRef(false)
   const [result, setResult] = useState<TravelResult>()
-  const [loading, setLoading] = useState(true)
   const fetchResult = useCallback(async function () {
-    
+    if (isFetching.current) return
     isFetching.current = true
-    setLoading(true)
     setResult(undefined)
+    const { id } = toast({
+      title: '正在获取...',
+      icon: 'loading'
+    })
     try {
       const result = await getTravelLineInfoById(params.id!)
       setResult(result)
-      setLoading(false)
     } catch (e: any) {
       toast({
         title: e.message || '获取失败',
@@ -28,20 +28,19 @@ export default function GenerateResult() {
       })
     } finally {
       isFetching.current = false
+      dismiss(id)
     }
 
   }, [params.id])
 
-  function onRefresh () {
-    return refreshTravelLine(params.id!)
-  }
 
   useEffect(function () {
-    setLoading(true)
     fetchResult()
   }, [fetchResult])
 
+  if (!result) return null
+
   return (
-    loading || !result ? <Loading/> : <Result refresh={onRefresh} data={result} />
+    <Result data={result} />
   )
 }

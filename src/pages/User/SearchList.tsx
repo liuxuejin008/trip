@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import List from './List'
-import { getMyTravelLinePage } from '@/services/travel'
+import { getMyTravelLinePage, TravelLineStatus } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import type { TravelLineListItem } from '@/services/travel'
 
@@ -13,7 +13,11 @@ export default function SearchList() {
       title: '正在加载...',
       icon: 'loading'
     })
-    getMyTravelLinePage()
+    getMyTravelLinePage({
+      status: TravelLineStatus.SEARCH,
+      page: 1,
+      pageSize: 10
+    })
       .then(res => setTravelList(res.list))
       .catch(e => {
         toast({

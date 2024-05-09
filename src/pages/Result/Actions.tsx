@@ -7,8 +7,7 @@ import IconSave from '@/components/Icons/Save'
 import type { TravelResult } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import type { DateRange } from 'react-day-picker'
-import { saveTravelLine } from '@/services/travel'
-import {useNavigate} from 'react-router-dom'
+import { saveTravelLine, refreshTravelLine } from '@/services/travel'
 
 type ActionButtonProps = {
   icon: React.ReactNode
@@ -31,7 +30,6 @@ type ActionsProps = {
   refresh: () => Promise<TravelResult>
 }
 export default function Actions(props: ActionsProps) {
-  const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [range, setRange] = useState<DateRange | undefined>({
@@ -54,15 +52,11 @@ export default function Actions(props: ActionsProps) {
       icon: 'loading'
     })
     try {
-      const result = await saveTravelLine(props.data)
+      await saveTravelLine(props.data)
       toast({
         title: '保存成功',
         icon: 'success'
       })
-
-      if (!props.data.tralineId) {
-        navigate(`/result/${result.tralineId}`)
-      }
     } catch (error) {
       toast({
         title: '保存失败',
@@ -81,7 +75,7 @@ export default function Actions(props: ActionsProps) {
       icon: 'loading'
     })
     try {
-      const result = await props.refresh()
+      const result = await refreshTravelLine(props.data.tralineId)
       props.setData(result)
       toast({
         title: '重新生成成功',

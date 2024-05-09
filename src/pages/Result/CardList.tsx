@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import IconMinus from '@/components/Icons/Minus'
 import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
+import type { TravelResult, TravelLineLineList } from '@/services/travel'
 
 function Recommend() {
   const list = [
@@ -48,18 +49,48 @@ function EditButton() {
   )
 }
 
-function CardItem() {
+function numberToChinese(num: number) {
+  const chnNumChar = ['零','一','二','三','四','五','六','七','八','九']
+  if (num < 10) {
+    return chnNumChar[num]
+  } else if (num === 10) {
+    return '十'
+  } else {
+    const tens = Math.floor(num / 10)
+    const units = num % 10
+    let result = ''
+    if (tens > 1) {
+      result += chnNumChar[tens]
+    }
+    result += '十'
+    if (units > 0) {
+      result += chnNumChar[units]
+    }
+    return result
+  }
+}
+
+type CardItemProps = {
+  item: TravelLineLineList
+  data: TravelResult
+  index: number
+  setData: (data: TravelResult) => void
+}
+function CardItem(props: CardItemProps) {
+  const { item, data, index, setData } = props
+  const dayCount = numberToChinese(index + 1)
+
   return (
     <div className="relative w-[1146px] box-border flex flex-col px-16 py-11 rounded-20 bg-primary-light">
       <div className="mt-20 flex items-center justify-between">
-        <div className="text-48 text-white font-medium ml-6">第一天</div>
+        <div className="text-48 text-white font-medium ml-6">第{dayCount}天</div>
         <div className="ml-20 text-white">
           <div className="font-medium text-24">行程卡标题</div>
           <div className="text-18 font-light">副标题/景点名字/08-12</div>
         </div>
         <div className="flex items-end gap-5">
           <EditButton />
-          <Button onClick={() => {}}>重新生成</Button>
+          <Button onClick={() => props.onRefresh(props.data, props.index)}>重新生成</Button>
         </div>
       </div>
       <div className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
@@ -71,18 +102,23 @@ function CardItem() {
         到达哪里游玩<br/>
         就寝，在哪里睡觉 <a className="text-primary" href="#">睡觉地点也是用超链接美团OR大众点评</a>
       </div>
-      <Recommend />
-      <button className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
-      <IconMinus className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />
+      {/* <Recommend /> */}
+      <button onClick={() => props.onAddDate(props.index)} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
+      <IconMinus onClick={() => props.onDelete(props.index)} className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />
     </div>
   )
 }
-export default function CardList() {
-  const list = Array.from({ length: 5 }, (_, i) => i)
+
+type CardListProps = {
+  data: TravelResult
+  setData: (data: TravelResult) => void
+}
+export default function CardList(props: CardListProps) {
+  const { tralineInfoList: list = [] } = props.data
   return (
     <div className="flex flex-col mt-20 gap-20">
-      {list.map(i => (
-        <CardItem key={i} />
+      {list.map((item, index) => (
+        <CardItem item={item} data={props.data} setData={props.setData} index={index} />
       ))}
     </div>
   )

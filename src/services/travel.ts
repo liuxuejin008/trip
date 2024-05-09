@@ -1,19 +1,20 @@
 import { axios } from '.'
 import type { Page, PageResponse } from './'
 
-const defaultPageParams: Page = {
-  page: 1,
-  pageSize: 10
-}
-
 export type TravelLineListItem = {
   id: string
   title: string
   location: string
 }
 
-export function getMyTravelLinePage(params: Page = defaultPageParams) {
-  return axios.get<PageResponse<TravelLineListItem>>('/v1/traline/page', { params })
+export const enum TravelLineStatus {
+  SEARCH = 0,
+  SAVED = 1
+}
+export function getMyTravelLinePage(params: Page<{
+  status: TravelLineStatus
+}>) {
+  return axios.get<PageResponse<TravelLineListItem>>('/v1/traline/page', {params})
 }
 
 export function getSearchList() {
@@ -21,7 +22,7 @@ export function getSearchList() {
 }
 
 export type TravelResult = {
-  tralineId?: string;
+  tralineId: string;
   /**
    * 作者名称
    */
@@ -53,7 +54,7 @@ export type TravelResult = {
   /**
    * 具体行程
    */
-  tralineLineList: TravelLineLineList[];
+  tralineInfoList: TravelLineLineList[];
 }
 
 export type TravelLineLineList = {
@@ -72,7 +73,7 @@ export type TravelLineLineList = {
   /**
    * 具体行程id
    */
-  tralineLineId?: string;
+  tralineLineId: string;
   /**
    * 旅行时间
    */
@@ -88,12 +89,12 @@ export type GenerateTravelLineParams = {
   startTime: string
   endTime: string
 }
-export function generateTravelLine(params: GenerateTravelLineParams) {
-  return axios.get<TravelResult>('/v1/traline/generation', {params})
+export function generateTravelLine(data: GenerateTravelLineParams) {
+  return axios.post<TravelResult>('/v1/traline/generation', data)
 }
 
 export function saveTravelLine(data: TravelResult) {
-  return axios.post<TravelResult>('/v1/traline/save', data)
+  return axios.post<{id: string}>('/v1/traline/save', data)
 }
 
 export function refreshTravelLine(id: string) {
