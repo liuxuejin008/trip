@@ -35,6 +35,7 @@ export default function Panel(props: PanelProps) {
         <div className="text-48 font-medium">你的旅程时间安排是？</div>
         <div className="h-[332px]">
           <DayPicker
+            disabled={{ before: new Date() }}
             locale={zhCN}
             mode="range"
             selected={_range}

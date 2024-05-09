@@ -10,6 +10,7 @@ import type { DateRange } from 'react-day-picker'
 import { getFormateDate } from '@/utils/date'
 import { generateTravelLine } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
+import { isBefore } from 'date-fns'
 
 function setPersistentLocation(data: { location: string, startTime: string, endTime: string }) {
   localStorage.setItem('location', data.location)
@@ -17,10 +18,15 @@ function setPersistentLocation(data: { location: string, startTime: string, endT
   localStorage.setItem('endTime', data.endTime)
 }
 
+function formatDate (time?: string | null) {
+  const dateTime = new Date(time || new Date())
+  return isBefore(dateTime, new Date()) ? new Date() : dateTime
+}
+
 function getPersistentLocation() {
   const location = localStorage.getItem('location') || ''
-  const startTime = new Date(localStorage.getItem('startTime') || new Date())
-  const endTime = new Date(localStorage.getItem('endTime') || new Date())
+  const startTime = formatDate(localStorage.getItem('startTime'))
+  const endTime = formatDate(localStorage.getItem('endTime'))
   return { location, startTime, endTime }
 }
 
