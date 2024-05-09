@@ -20,7 +20,7 @@ export default function GenerateResult() {
           const result = await getTravelLineInfoById(params.id!)
           setResult(result)
           if (result.status === 3) {
-            timer.current = setTimeout(loop, 300)
+            timer.current = setTimeout(loop, 1000)
           } else {
             timer.current && clearTimeout(timer.current)
             timer.current = null
