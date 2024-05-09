@@ -3,7 +3,7 @@ import DateRangePicker from '@/components/DateRangePicker'
 import IMAGE_BG from '@/assets/images/home_bg.png'
 import IconGo from '@/components/Icons/Go'
 import PhoneLogin from '../../components/Auth/Phone'
-import { isLogin as _isLogin,  setToken } from '@/utils/token'
+import { isLogin as _isLogin, setToken } from '@/utils/token'
 import type { Token } from '@/utils/token'
 import { useNavigate } from 'react-router-dom'
 import type { DateRange } from 'react-day-picker'
@@ -13,13 +13,26 @@ import { useToast } from '@/components/Toast/use-toast'
 
 const Loading = lazy(() => import('@/components/Loading'))
 
+function setPersistentLocation(data: { location: string, startTime: string, endTime: string }) {
+  localStorage.setItem('location', data.location)
+  localStorage.setItem('startTime', data.startTime)
+  localStorage.setItem('endTime', data.endTime)
+}
+
+function getPersistentLocation() {
+  const location = localStorage.getItem('location') || ''
+  const startTime = new Date(localStorage.getItem('startTime') || new Date())
+  const endTime = new Date(localStorage.getItem('endTime') || new Date())
+  return { location, startTime, endTime }
+}
+
 type AddressInputProps = {
   value?: string
   onChange: (value: string) => void
   onSearch: () => void
 }
 function AddressInput(props: AddressInputProps) {
-  function onKeyUp (e: React.KeyboardEvent<HTMLInputElement>) {
+  function onKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       props.onSearch()
     }
@@ -35,7 +48,7 @@ function AddressInput(props: AddressInputProps) {
   )
 }
 
-function ProfileButton () {
+function ProfileButton() {
   const navigate = useNavigate()
 
   return (
@@ -44,24 +57,25 @@ function ProfileButton () {
 }
 
 export default function Home() {
+  const preLocationData = getPersistentLocation()
   const [open, setOpen] = useState<boolean>(false)
   const [isLogin, setIsLogin] = useState(_isLogin())
-  const [location, setLocation] = useState<string>()
+  const [location, setLocation] = useState<string>(preLocationData.location)
   const [isGenerating, setIsGenerating] = useState<boolean>(false)
   const [range, setRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date()
+    from: preLocationData.startTime,
+    to: preLocationData.endTime
   })
   const navigate = useNavigate()
   const { toast } = useToast()
 
-  function onSuccess (token: Token) {
+  function onSuccess(token: Token) {
     setToken(token)
     setIsLogin(true)
     setOpen(false)
   }
 
-  async function onGenerate () {
+  async function onGenerate() {
     const startTime = getFormateDate(range?.from)
     const endTime = getFormateDate(range?.to)
     if (!location) {
@@ -79,9 +93,11 @@ export default function Home() {
       return
     }
 
+    setPersistentLocation({ location, startTime, endTime })
+
     try {
       setIsGenerating(true)
-      const { tralineId } = await generateTravelLine({location, startTime, endTime})
+      const { tralineId } = await generateTravelLine({ location, startTime, endTime })
       navigate(`/result/${tralineId}`)
     } catch (e) {
       toast({
@@ -94,7 +110,7 @@ export default function Home() {
 
   return (
     <>
-      <div style={{backgroundImage: `url(${IMAGE_BG})`}} className="relative w-screen h-screen bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:w-screen after:h-screen after:bg-dark-77">
+      <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative w-screen h-screen bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:w-screen after:h-screen after:bg-dark-77">
         <div className="flex-[2] min-h-[640px] flex flex-col flex-shrink-0 items-center justify-center text-white z-10">
           <h1 className="font-semibold text-48">游攻略</h1>
           <p className="font-semibold text-24 mt-5">AI 帮你制作旅行攻略</p>
