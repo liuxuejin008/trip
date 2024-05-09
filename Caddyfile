@@ -38,7 +38,8 @@
   # proxy /api path to shorturlpro-production.up.railway.app
   handle_path /api/* {
     reverse_proxy https://shorturlpro-production.up.railway.app {
-      header_up Host {upstream_hostport}
+      header_up Host https://shorturlpro-production.up.railway.app
+      header_up Origin shorturlpro-production.up.railway.app
     }
   }
 }
