@@ -29,6 +29,7 @@ type ActionsProps = {
   setData: (data: TravelResult) => void
   disabled: boolean
   setDisabled: (disabled: boolean) => void
+  startLoop: () => void
 }
 export default function Actions(props: ActionsProps) {
   const { disabled, setDisabled } = props
@@ -83,8 +84,8 @@ export default function Actions(props: ActionsProps) {
       icon: 'loading'
     })
     try {
-      const result = await refreshTravelLine(props.data.tralineId)
-      props.setData(result)
+      await refreshTravelLine(props.data.tralineId)
+      await props.startLoop()
       toast({
         title: '重新生成成功',
         icon: 'success'

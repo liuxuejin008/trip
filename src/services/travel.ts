@@ -55,6 +55,8 @@ export type TravelResult = {
    * 具体行程
    */
   tralineInfoList: TravelLineLineList[];
+
+  status: number
 }
 
 export type TravelLineLineList = {

@@ -11,8 +11,6 @@ import { getFormateDate } from '@/utils/date'
 import { generateTravelLine } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 
-const Loading = lazy(() => import('@/components/Loading'))
-
 function setPersistentLocation(data: { location: string, startTime: string, endTime: string }) {
   localStorage.setItem('location', data.location)
   localStorage.setItem('startTime', data.startTime)
@@ -62,13 +60,12 @@ export default function Home() {
   const [open, setOpen] = useState<boolean>(searchParams.get('login') === 'true')
   const [isLogin, setIsLogin] = useState(_isLogin())
   const [location, setLocation] = useState<string>(preLocationData.location)
-  const [isGenerating, setIsGenerating] = useState<boolean>(false)
   const [range, setRange] = useState<DateRange | undefined>({
     from: preLocationData.startTime,
     to: preLocationData.endTime
   })
   const navigate = useNavigate()
-  const { toast } = useToast()
+  const { toast, dismiss } = useToast()
 
   function onSuccess(token: Token) {
     setToken(token)
@@ -97,8 +94,12 @@ export default function Home() {
 
     setPersistentLocation({ location, startTime, endTime })
 
+    const { id } = toast({
+      title: '生成中...',
+      icon: 'loading'
+    })
+
     try {
-      setIsGenerating(true)
       const { tralineId } = await generateTravelLine({ location, startTime, endTime })
       navigate(`/result/${tralineId}`)
     } catch (e) {
@@ -106,7 +107,8 @@ export default function Home() {
         title: '生成失败',
         icon: 'error'
       })
-      setIsGenerating(false)
+    } finally {
+      dismiss(id)
     }
   }
 
@@ -124,7 +126,6 @@ export default function Home() {
         </div>
       </div>
       <PhoneLogin open={open} onOpenChange={setOpen} onSuccess={onSuccess} />
-      {isGenerating && <Loading />}
     </>
   )
 }

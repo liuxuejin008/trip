@@ -10,17 +10,41 @@ export default function GenerateResult() {
   const params = useParams<{ id: string }>()
   const isFetching = useRef(false)
   const [result, setResult] = useState<TravelResult>()
-  const fetchResult = useCallback(async function () {
+  const [isLoading, setIsLoading] = useState(false)
+  const timer = useRef<number | null>(null)
+
+  function startLoop() {
+    return new Promise(async function (resolve, reject) {
+      async function loop() {
+        try {
+          const result = await getTravelLineInfoById(params.id!)
+          setResult(result)
+          if (result.status === 3) {
+            setTimeout(loop, 1000)
+          } else if (timer.current) {
+            clearTimeout(timer.current)
+            timer.current = null
+            resolve(result)
+          }
+        } catch (e: any) {
+          reject(e)
+        }
+      }
+      loop()
+    })
+  }
+
+  const loopResult = useCallback(async function () {
     if (isFetching.current) return
     isFetching.current = true
     setResult(undefined)
     const { id } = toast({
-      title: '正在获取...',
+      title: '正在获取生成结果...',
       icon: 'loading'
     })
+    setIsLoading(true)
     try {
-      const result = await getTravelLineInfoById(params.id!)
-      setResult(result)
+      await startLoop()
     } catch (e: any) {
       toast({
         title: e.message || '获取失败',
@@ -28,19 +52,22 @@ export default function GenerateResult() {
       })
     } finally {
       isFetching.current = false
+      setIsLoading(false)
       dismiss(id)
     }
-
   }, [params.id])
 
 
   useEffect(function () {
-    fetchResult()
-  }, [fetchResult])
+    loopResult()
+    return () => {
+      timer.current && clearTimeout(timer.current)
+    }
+  }, [params.id])
 
   if (!result) return null
 
   return (
-    <Result data={result} />
+    <Result data={result} startLoop={startLoop} isLoading={isLoading} />
   )
 }

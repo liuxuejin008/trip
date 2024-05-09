@@ -9,6 +9,8 @@ import type { TravelResult } from '@/services/travel'
 
 type ResultProps = {
   data: TravelResult
+  startLoop: () => void
+  isLoading: boolean
 }
 export default function Result(props: ResultProps) {
   const [result, setResult] = useState<TravelResult>(props.data)
@@ -18,12 +20,16 @@ export default function Result(props: ResultProps) {
     setResult(props.data)
   }, [props.data])
 
+  useEffect(function () {
+    setDisabled(props.isLoading)
+  }, [props.isLoading])
+
   return (
     <>
       <div className="mb-16">
         <Overview data={result} />
         <div className="flex flex-col items-center">
-          <Actions disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
+          <Actions startLoop={props.startLoop} disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
           <CardList disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
           {false && <Rate />}
           <ShareButton/>
