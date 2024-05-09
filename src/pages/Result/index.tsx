@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import Overview from './Overview'
+import Actions from './Actions'
 
 export default function Result() {
   const params = useParams<{id: string}>()
@@ -8,6 +9,9 @@ export default function Result() {
   return (
     <div>
       <Overview />
+      <div className="flex flex-col items-center">
+        <Actions />
+      </div>
     </div>
   )
 }
