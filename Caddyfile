@@ -7,10 +7,6 @@
   log {
     format json # set runtime log format to json mode 
   }
-  # server options
-  servers {
-    trusted_proxies static private_ranges # trust railway's proxy
-  }
 }
 
 # site block, listens on the $PORT environment variable, automatically assigned by railway
@@ -25,7 +21,7 @@
 
   # proxy /api path to shorturlpro-production.up.railway.app
   handle_path /api/* {
-    reverse_proxy https://short_url_pro.railway.internal
+    reverse_proxy https://shorturlpro-production.up.railway.app
   }
   handle {
     # serve from the 'dist' folder (Vite builds into the 'dist' folder)
