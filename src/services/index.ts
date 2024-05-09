@@ -82,7 +82,7 @@ axios.interceptors.response.use((response) => {
     } else {
       redirecting = true
       setTimeout(() => {
-        window.location.href = '/'
+        window.location.href = '/?login=true'
       }, 500)
       return Promise.reject(error)
     }

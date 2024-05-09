@@ -5,7 +5,7 @@ import IconGo from '@/components/Icons/Go'
 import PhoneLogin from '../../components/Auth/Phone'
 import { isLogin as _isLogin, setToken } from '@/utils/token'
 import type { Token } from '@/utils/token'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import type { DateRange } from 'react-day-picker'
 import { getFormateDate } from '@/utils/date'
 import { generateTravelLine } from '@/services/travel'
@@ -58,7 +58,8 @@ function ProfileButton() {
 
 export default function Home() {
   const preLocationData = getPersistentLocation()
-  const [open, setOpen] = useState<boolean>(false)
+  const [searchParams] = useSearchParams()
+  const [open, setOpen] = useState<boolean>(searchParams.get('login') === 'true')
   const [isLogin, setIsLogin] = useState(_isLogin())
   const [location, setLocation] = useState<string>(preLocationData.location)
   const [isGenerating, setIsGenerating] = useState<boolean>(false)
@@ -73,6 +74,7 @@ export default function Home() {
     setToken(token)
     setIsLogin(true)
     setOpen(false)
+    navigate('/')
   }
 
   async function onGenerate() {
