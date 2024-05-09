@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="279px" height="220px" viewBox="0 0 279 220" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>去哪里</title>
+    <g id="第一版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="图标和元素说明" transform="translate(-2067.5, -1609.5)" fill="#FED565" fill-rule="nonzero">
+            <g id="去哪里" transform="translate(2207, 1719.5) scale(1, -1) rotate(90) translate(-2207, -1719.5)translate(2097, 1580)">
+                <path d="M123.110465,171.692308 L123.110465,101.942308 L206.25,101.942308 L103.284884,4.54747351e-13 L0,102.156923 L83.1395348,102.156923 L83.1395348,279 L122.684108,279 L122.684108,227.277692 C138.032946,206.567308 167.877907,171.370385 220,169.331539 L220,134.456539 C184.446392,135.461654 150.285278,148.590165 123.110465,171.692308 Z" id="路径"></path>
+            </g>
+        </g>
+    </g>
+</svg>

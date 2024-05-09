@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="399px" height="399px" viewBox="0 0 399 399" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>圆形图标-普通</title>
+    <g id="第一版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="图标和元素说明" transform="translate(-310, -1034)">
+            <g id="介绍区图标" transform="translate(310, 258)">
+                <g id="圆形图标-普通" transform="translate(0, 776)">
+                    <circle id="椭圆形" fill="#1D2A3B" cx="199.5" cy="199.5" r="199.5"></circle>
+                    <g id="401位置" transform="translate(130.3438, 110.5)" fill="#FFFFFF" fill-rule="nonzero">
+                        <path d="M72.65625,0 C32.5,0 0,32.5 0,72.65625 C0,92.5 7.96875,110.625 20.9375,123.75 L72.65625,175 L124.21875,123.59375 C137.1875,110.46875 145.156811,92.5 145.156811,72.5 C145.3125,32.5 112.8125,0 72.65625,0 Z M97.65625,64.6875 C96.71875,76.875 87.03125,86.5625 74.84375,87.5 C60.15625,88.75 47.8125,77.03125 47.8125,62.65625 C47.8125,48.90625 59.0625,37.65625 72.8125,37.65625 C87.1875,37.65625 98.90625,50 97.65625,64.6875 L97.65625,64.6875 Z" id="形状"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
