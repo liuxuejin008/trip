@@ -137,9 +137,9 @@ export default function Phone(props: PhoneProps) {
         title: '登录成功',
         icon: 'success',
       })
-    } catch (e) {
+    } catch (e: any) {
       toast({
-        title: '登录失败',
+        title: e.message || '登录失败',
         icon: 'error',
       })
     } finally {
