@@ -6,6 +6,7 @@ import IconLocation from '@/components/Icons/Location'
 import IconMoney from '@/components/Icons/Money'
 import IconPiece from '@/components/Icons/Piece'
 import IconWeather from '@/components/Icons/Weather'
+import type { TravelResult } from '@/services/travel'
 
 const icons = [
   {
@@ -30,14 +31,17 @@ const icons = [
   }
 ]
 
-function Card() {
+type CardProps = {
+  data: TravelResult
+}
+function Card(props: CardProps) {
   const [current, setCurrent] = useState(icons[0].name)
-
+  const { data } = props
   return (
     <div className="w-[1146px] box-border h-[470px] bg-dark-light-78 rounded-[43px] pt-20 px-[210px] mt-40">
       <div className="flex items-center justify-center flex-col">
-        <div className="text-36 text-white">简介标题</div>
-        <div className="w-full text-left mt-[62px] h-36 overflow-hidden line-clamp-5 leading-7 text-20 text-white">简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息简介信息</div>
+        <div className="text-36 text-white">{data.title}</div>
+        <div className="w-full text-left mt-[62px] h-36 overflow-hidden line-clamp-5 leading-7 text-20 text-white">{data.describe}</div>
       </div>
       <div className="flex items-end justify-center gap-[28px] mt-12">
         {icons.map(item => <div onClick={() => setCurrent(item.name)} className={cs('w-[50px] h-[50px] items-center justify-center flex rounded-full overflow-hidden cursor-pointer', 
@@ -49,7 +53,11 @@ function Card() {
   )
 }
 
-export default function Overview() {
+type OverViewProps = {
+  data: TravelResult
+}
+export default function Overview(props: OverViewProps) {
+  const { data } = props
   return (
     <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative bg-cover h-[1108px] before:absolute before:left-0 before:top-0 before:right-0 before:bottom-0 before:bg-dark-77">
       <div className="relative flex flex-col items-center pt-[34px] z-10">
@@ -57,11 +65,11 @@ export default function Overview() {
         <div className="text-primary-dark text-28">AI 旅游攻略</div>
 
         <div className="mt-[77px] text-white text-48 text-shadow-dark text-center">
-          <div>用户昵称</div>
-          <div>北京 5 天 行程</div>
+          <div>{data.author_name}</div>
+          <div>{data.location} {data.dayNumber} 天 行程</div>
         </div>
 
-        <Card />
+        <Card data={data} />
       </div>
     </div>
   )

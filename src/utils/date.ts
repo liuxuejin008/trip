@@ -14,3 +14,7 @@ export function getFullDate(date?: Date) {
 export function getWeekDay(date?: Date) {
   return date ? format(date, 'EE', {locale: zhCN}) : ''
 }
+
+export function getFormateDate(date?: Date) {
+  return date ? format(date, 'yyyy-MM-dd') : ''
+}

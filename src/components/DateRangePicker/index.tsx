@@ -9,24 +9,29 @@ const Panel = lazy(() => import('./Panel'))
 
 export type DateRangePickerProps = {
   className?: string
+  onChange: (range?: DateRange) => void
+  value?: DateRange
+  disabled?: boolean
 }
 
 export default function DateRangePicker(props: DateRangePickerProps) {
-  const [range, setRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date()
-  })
+  const range = props.value
   const [open, setOpen] = useState(false)
+  
+  function onOpenChange (open: boolean) {
+    if (props.disabled) return
+    setOpen(open)
+  }
 
   return (
-    <Drawer.Root open={open} onOpenChange={setOpen}>
+    <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Trigger>
         <div className={cs('shadow-date w-[387px] h-[62px] box-border rounded-36 flex items-center justify-center text-white text-20 font-medium bg-dark-light border border-dark-light-5 cursor-pointer hover:border-white transition-border', props.className)}>{getFullDate(range?.from)} - {getFullDate(range?.to)}</div>
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Content className="fixed bottom-0 z-10">
           <Suspense>
-            <Panel open={open} setOpen={setOpen} range={range} onSelect={setRange} />
+            <Panel disabled={props.disabled} open={open} setOpen={onOpenChange} range={range} onSelect={props.onChange} />
           </Suspense>
         </Drawer.Content>
         <Drawer.Overlay />

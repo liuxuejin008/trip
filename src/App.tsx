@@ -7,7 +7,8 @@ import { lazy, Suspense } from 'react'
 import { Toaster } from '@/components/Toast/toaster'
 
 const Home = lazy(() => import('./pages/Home'))
-const Result = lazy(() => import('./pages/Result'))
+const ResultDetail = lazy(() => import('./pages/Result/ResultDetail'))
+const GenerateResult = lazy(() => import('./pages/Result/GenerateResult'))
 const User = lazy(() => import('./pages/User'))
 const TravelList = lazy(() => import('./pages/User/TravelList'))
 const SearchList = lazy(() => import('./pages/User/SearchList'))
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
     element: <Home />
   },
   {
+    path: '/result',
+    element: <GenerateResult />
+  },
+  {
     path: '/result/:id',
-    element: <Result />
+    element: <ResultDetail />
   },
   {
     path: '/user',

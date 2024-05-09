@@ -11,6 +11,7 @@ export type PanelProps = {
   onSelect?: (range?: DateRange) => void
   open: boolean
   setOpen: (open: boolean) => void
+  disabled?: boolean
 }
 export default function Panel(props: PanelProps) {
   const [_range, _onSelect] = useState(props.range)
