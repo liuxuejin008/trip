@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import IconMinus from '@/components/Icons/Minus'
 import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
 import type { TravelResult, TravelLineLineList } from '@/services/travel'
-import { regenerationTravelLineInfo, addTravelLineByTime } from '@/services/travel'
+import { regenerationTravelLineInfo, addTravelLineByTime, rewriteTravelLineInfo } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import { getFormateDate } from '@/utils/date'
 import { add } from 'date-fns'
@@ -33,17 +33,38 @@ function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { childre
   )
 }
 
-function EditButton() {
+type EditButtonProps = {
+  disabled: boolean
+  onRewrite: (content: string) => void
+}
+function EditButton(props: EditButtonProps) {
   const [open, setOpen] = useState(false)
+  const [content, setContent] = useState<string>()
+  const { toast } = useToast()
+  useEffect(function () {
+    if (open) {
+      setContent('')
+    }
+  }, [open])
+
+  async function onRewrite() {
+    if (!content) {
+      toast({ title: '请输入内容', icon: 'error' })
+      return
+    }
+    props.onRewrite(content)
+    setOpen(false)
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <Button>修改</Button>
+        <Button disabled={props.disabled} >修改</Button>
       </PopoverTrigger>
       <PopoverContent sideOffset={20} className="w-[706px] border-none h-72 bg-dark !rounded-30 p-8 box-border flex flex-col justify-between">
         <h2 className="text-white text-36 font-semibold">跟AI对话进行修改</h2>
-        <input className="w-full h-[60px] outline-none bg-white box-border rounded-18 px-5 text-20 font-semibold text-dark-light placeholder:text-dark-light" placeholder="那天你想做什么？" type="text" />
-        <button onClick={() => setOpen(false)} className="outline-none w-48 h-[50px] bg-primary-light rounded-lg text-white text-20 flex items-center justify-center self-end font-semibold">生成</button>
+        <input value={content} onChange={(e) => setContent(e.target.value)} className="w-full h-[60px] outline-none bg-white box-border rounded-18 px-5 text-20 font-semibold text-dark-light placeholder:text-dark-light" placeholder="那天你想做什么？" type="text" />
+        <button onClick={onRewrite} className="outline-none w-48 h-[50px] bg-primary-light rounded-lg text-white text-20 flex items-center justify-center self-end font-semibold">生成</button>
       </PopoverContent>
     </Popover>
   )
@@ -105,7 +126,7 @@ function CardItem(props: CardItemProps) {
     setDisabled(true)
     const { id } = toast({ title: '重新生成中...', icon: 'loading' })
     try {
-      const res = item.tralineInfoId ? await regenerationTravelLineInfo(item.tralineInfoId) : await addTravelLineByTime({location: data.location, tralineTime: getDateByIndex(data.startTime, index)})
+      const res = item.tralineInfoId ? await regenerationTravelLineInfo(item.tralineInfoId) : await addTravelLineByTime({ location: data.location, tralineTime: getDateByIndex(data.startTime, index) })
       setDisabled(false)
       const list = data.tralineInfoList.map((line, i) => {
         if (i === index) {
@@ -128,11 +149,37 @@ function CardItem(props: CardItemProps) {
     setDisabled(true)
     const { id } = toast({ title: '添加日期中...', icon: 'loading' })
     try {
-      const res = await addTravelLineByTime({location: data.location, tralineTime: getDateByIndex(data.startTime, index + 1)})
+      const res = await addTravelLineByTime({ location: data.location, tralineTime: getDateByIndex(data.startTime, index + 1) })
       data.tralineInfoList.splice(index + 1, 0, res)
       setData({ ...data, tralineInfoList: [...data.tralineInfoList], dayNumber: data.tralineInfoList.length, endTime: getDateByIndex(data.startTime, data.tralineInfoList.length - 1) })
     } catch (e: any) {
       toast({ title: e.message || '添加日期失败', icon: 'error' })
+    } finally {
+      setDisabled(false)
+      dismiss(id)
+    }
+  }
+
+  async function onRewrite(content: string) {
+    if (disabled) return
+    setDisabled(true)
+    const { id } = toast({ title: '修改中...', icon: 'loading' })
+    try {
+      const res = await rewriteTravelLineInfo({
+        beforeContent: item.content,
+        location: data.location,
+        suggest: content,
+        tralineTime: getDateByIndex(data.startTime, index)
+      })
+      const list = data.tralineInfoList.map((line, i) => {
+        if (i === index) {
+          return res
+        }
+        return line
+      })
+      setData({ ...data, tralineInfoList: list })
+    } catch (e: any) {
+      toast({ title: e.message || '修改失败', icon: 'error' })
     } finally {
       setDisabled(false)
       dismiss(id)
@@ -148,7 +195,7 @@ function CardItem(props: CardItemProps) {
           <div className="text-18 font-light">{item.subTitle}</div>
         </div>
         <div className="flex items-end gap-5">
-          <EditButton />
+          <EditButton disabled={disabled} onRewrite={onRewrite} />
           <Button disabled={disabled} onClick={onRegenerate}>重新生成</Button>
         </div>
       </div>

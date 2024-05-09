@@ -14,7 +14,7 @@ export const enum TravelLineStatus {
 export function getMyTravelLinePage(params: Page<{
   status: TravelLineStatus
 }>) {
-  return axios.get<PageResponse<TravelLineListItem>>('/v1/traline/page', {params})
+  return axios.get<PageResponse<TravelLineListItem>>('/v1/traline/page', { params })
 }
 
 export function getSearchList() {
@@ -95,7 +95,7 @@ export function generateTravelLine(data: GenerateTravelLineParams) {
 }
 
 export function saveTravelLine(data: TravelResult) {
-  return axios.post<{id: string}>('/v1/traline/save', data)
+  return axios.post<{ id: string }>('/v1/traline/save', data)
 }
 
 export function refreshTravelLine(id: string) {
@@ -112,5 +112,15 @@ export type TravelLineByTimeParams = {
 }
 
 export function addTravelLineByTime(params: TravelLineByTimeParams) {
-  return axios.get('/v1/traline/info/addByTime', {params})
+  return axios.get('/v1/traline/info/addByTime', { params })
+}
+
+export type RewriteParams = {
+  beforeContent: string;
+  location: string;
+  suggest: string;
+  tralineTime: string;
+}
+export function rewriteTravelLineInfo(data: RewriteParams) {
+  return axios.post<TravelLineLineList>('/v1/traline/info/rewrite', data)
 }
