@@ -50,7 +50,8 @@ export default {
       boxShadow: {
         button: '3px 3 4px 0px rgba(0,0,0,0.5)',
         date: '5px 5 4px 0px rgba(0,0,0,0.6)',
-        pic: '2px 2 4px 0px rgba(0,0,0,0.5)'
+        pic: '2px 2 4px 0px rgba(0,0,0,0.5)',
+        button2: '3px 3 2px 0px rgba(0,0,0,0.6)',  
       },
       backgroundImage: {
         date: 'linear-gradient( 180deg, rgba(58,61,75,0.82) 0%, #1D2A3B 100%)'
