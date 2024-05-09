@@ -14,7 +14,7 @@ export type UserInfo = {
   /**
    * 昵称
    */
-  nickname?: string;
+  nickName?: string;
   /**
    * 手机号码
    */
@@ -26,4 +26,9 @@ export type UserInfo = {
 }
 export function getUserInfo() {
   return axios.get<UserInfo>('/v1/user/getUserInfo')
+}
+
+export type UpdateUserInfo = Pick<UserInfo, 'nickName' | 'id'>
+export function updateUserInfo(userInfo: UpdateUserInfo) {
+  return axios.post('/v1/user/update', userInfo)
 }

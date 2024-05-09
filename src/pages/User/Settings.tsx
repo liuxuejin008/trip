@@ -2,6 +2,7 @@ import cs from 'classnames'
 import { useState, useEffect } from 'react'
 import { getUserInfo } from '@/services/user'
 import type { UserInfo } from '@/services/user'
+import SettingDialog from '@/components/Auth/Setting'
 
 type ButtonProps = {
   className?: string
@@ -34,17 +35,22 @@ function ListItem (props: ListItemProps) {
 
 export default function Settings() {
   const [userInfo, setUserInfo] = useState<UserInfo>()
+  const [open, setOpen] = useState(false)
 
   useEffect(function () {
     getUserInfo().then(setUserInfo)
   }, [])
 
+  function onSuccess(userInfo: UserInfo) {
+    setUserInfo(userInfo)
+  }
+
   return (
     <>
-      <div className="text-24">昵称：<span className="ml-6">{userInfo?.nickname || userInfo?.phoneNumber}</span></div>
+      <div className="text-24">昵称：<span className="ml-6">{userInfo?.nickName || userInfo?.phoneNumber}</span></div>
       <div className="mt-9">
         <div className='flex gap-9'>
-          <Button className="bg-dark-light">修改昵称</Button>
+          <Button onClick={() => setOpen(true)} className="bg-dark-light">修改昵称</Button>
           {/* <Button className="bg-dark-light">修改密码</Button> */}
           <Button className="bg-error">退出账户</Button>
         </div>
@@ -54,6 +60,7 @@ export default function Settings() {
         <ListItem label="手机号" value={userInfo?.phoneNumber} />
         {/* <ListItem label="绑定邮箱" value="xxxxx@gmail.com" /> */}
       </div>
+      <SettingDialog open={open} userInfo={userInfo} onOpenChange={setOpen} onSuccess={onSuccess} />
     </>
   )
 }
