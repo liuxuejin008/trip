@@ -11,7 +11,7 @@ type ActionButtonProps = {
 }
 function ActionButton(props: ActionButtonProps) {
   return (
-    <div onClick={props.onClick} className="mt-14 w-[232px] h-[71px] bg-dark-light rounded-36 flex items-center justify-center shadow-date border border-dark-light-5 text-white text-18">
+    <div onClick={props.onClick} className="mt-14 w-[232px] h-[71px] bg-dark-light rounded-36 flex items-center justify-center shadow-date border border-dark-light-5 text-white text-18 cursor-pointer">
       {props.icon}
       <span className="ml-7">{props.children}</span>
     </div>
