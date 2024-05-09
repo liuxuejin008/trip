@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import IconMinus from '@/components/Icons/Minus'
 import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
 import type { TravelResult, TravelLineLineList } from '@/services/travel'
@@ -109,8 +109,10 @@ type CardItemProps = {
 }
 function CardItem(props: CardItemProps) {
   const { item, data, index, setData, disabled, setDisabled } = props
+  const [isEdit, setIsEdit] = useState(false)
   const dayCount = numberToChinese(index + 1)
   const { toast, dismiss } = useToast()
+  const $content = useRef<HTMLDivElement>(null)
 
   // 是否可以删除，如果不止一天，则可以删除
   const isShowMinus = index !== 0 || data.tralineInfoList.length > 1
@@ -186,6 +188,29 @@ function CardItem(props: CardItemProps) {
     }
   }
 
+  function onEdit() {
+    setIsEdit(true)
+    setTimeout(() => {
+      const range = document.createRange()
+      range.selectNodeContents($content.current!)
+      const sel = window.getSelection()
+      sel!.removeAllRanges()
+      sel!.addRange(range)
+    }, 0)
+  }
+
+  function onSave () {
+    setIsEdit(false)
+    const content = $content.current!.innerHTML
+    const list = data.tralineInfoList.map((line, i) => {
+      if (i === index) {
+        return { ...line, content }
+      }
+      return line
+    })
+    setData({ ...data, tralineInfoList: list })
+  }
+
   return (
     <div className="relative w-[1146px] box-border flex flex-col px-16 py-11 rounded-20 bg-primary-light">
       <div className="mt-20 flex items-center justify-between">
@@ -195,11 +220,12 @@ function CardItem(props: CardItemProps) {
           <div className="text-18 font-light">{item.subTitle}</div>
         </div>
         <div className="flex items-end gap-5">
-          <EditButton disabled={disabled} onRewrite={onRewrite} />
+          {false && <EditButton disabled={disabled} onRewrite={onRewrite} />}
+          <Button disabled={disabled} onClick={onEdit}>修改</Button>
           <Button disabled={disabled} onClick={onRegenerate}>重新生成</Button>
         </div>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: normalizeContent(item.content) }} className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
+      <div ref={$content} contentEditable={isEdit} onBlur={onSave} dangerouslySetInnerHTML={{ __html: normalizeContent(item.content) }} className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
       </div>
       {false && <Recommend />}
       <button onClick={addDate} disabled={disabled} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
