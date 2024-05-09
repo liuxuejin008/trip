@@ -10,7 +10,7 @@ type BaseDialogProps = {
 }
 export default function BaseDialog(props: BaseDialogProps) {
   return (
-    <Dialog open onOpenChange={props.onOpenChange}>
+    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogContent className={cs('h-[524px] w-[760px]', props.className)}>
         <DialogHeader>
           {props.title}

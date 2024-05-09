@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import IconMinus from '@/components/Icons/Minus'
+import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
 
 function Recommend() {
   const list = [
@@ -20,13 +22,29 @@ function Recommend() {
 
 type ButtonProps = {
   children: React.ReactNode
-  onClick: () => void
+  onClick?: () => void
 }
 function Button(props: ButtonProps) {
   return (
     <button onClick={props.onClick} className="w-[178px] h-[54px] outline-none shadow-button bg-dark-light rounded-36 flex items-center justify-center text-18 font-light text-white">
       {props.children}
     </button>
+  )
+}
+
+function EditButton() {
+  const [open, setOpen] = useState(false)
+  return (
+    <Popover open={open}  onOpenChange={setOpen}>
+      <PopoverTrigger>
+        <Button>修改</Button>
+      </PopoverTrigger>
+      <PopoverContent sideOffset={20} className="w-[706px] border-none h-72 bg-dark !rounded-30 p-8 box-border flex flex-col justify-between">
+        <h2 className="text-white text-36 font-semibold">跟AI对话进行修改</h2>
+        <input className="w-full h-[60px] outline-none bg-white box-border rounded-18 px-5 text-20 font-semibold text-dark-light placeholder:text-dark-light" placeholder="那天你想做什么？" type="text" />
+        <button onClick={() => setOpen(false)} className="outline-none w-48 h-[50px] bg-primary-light rounded-lg text-white text-20 flex items-center justify-center self-end font-semibold">生成</button>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -40,7 +58,7 @@ function CardItem() {
           <div className="text-18 font-light">副标题/景点名字/08-12</div>
         </div>
         <div className="flex items-end gap-5">
-          <Button onClick={() => {}}>修改</Button>
+          <EditButton />
           <Button onClick={() => {}}>重新生成</Button>
         </div>
       </div>

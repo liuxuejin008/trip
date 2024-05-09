@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import DateRangePicker from '@/components/DateRangePicker'
 import IMAGE_BG from '@/assets/images/home_bg.png'
 import IconGo from '@/components/Icons/Go'
-import Login from '../../components/Auth/Login'
+import PhoneLogin from '../../components/Auth/Phone'
+import { isLogin as _isLogin,  setToken } from '@/utils/token'
 
 function AddressInput() {
   return (
@@ -15,12 +17,6 @@ function AddressInput() {
   )
 }
 
-function Shared () {
-  return (
-    <div className="h-10 mt-7"></div>
-  )
-}
-
 function ProfileButton () {
   return (
     <button className="bg-primary-light text-white flex items-center justify-center w-[150px] h-[60px] rounded-30 shadow-button font-medium text-24 outline-none mt-11 hover:bg-primary transition-bg">个人中心</button>
@@ -28,6 +24,15 @@ function ProfileButton () {
 }
 
 export default function Home() {
+  const [open, setOpen] = useState<boolean>(false)
+  const [isLogin, setIsLogin] = useState(_isLogin())
+
+  function onSuccess (token: string) {
+    setToken(token)
+    setIsLogin(true)
+    setOpen(false)
+  }
+
   return (
     <>
       <div style={{backgroundImage: `url(${IMAGE_BG})`}} className="relative w-screen h-screen bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:w-screen after:h-screen after:bg-dark-77">
@@ -37,12 +42,11 @@ export default function Home() {
           <AddressInput />
           <p className="font-semibold text-36 mt-11">旅程日期</p>
           <DateRangePicker className="mt-5" />
-          <ProfileButton />
-          {/* <div className="text-18 mt-11 hover:underline">现在登录</div> */}
-          {/* <Shared /> */}
+          {isLogin && <ProfileButton />}
+          {!isLogin && <button onClick={() => setOpen(true)} className="text-18 mt-11 hover:underline cursor-pointer outline-none">现在登录</button>}
         </div>
       </div>
-      <Login />
+      <PhoneLogin open={open} onOpenChange={setOpen} onSuccess={onSuccess} />
     </>
   )
 }

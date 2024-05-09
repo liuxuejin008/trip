@@ -8,5 +8,13 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://192.168.19.107:8080',
+        changeOrigin: true
+      }
+    }
   }
 })

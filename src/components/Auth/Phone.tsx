@@ -5,6 +5,11 @@ import FormItem from './FormItem'
 import Button from './Button'
 import Dialog from './BaseDialog'
 import useCountDown from '@/hooks/useCountDown'
+import { sendVerificationCode, phoneLogin } from '@/services/user'
+
+function validatePhoneNumber(phoneNumber: string) {
+  return phoneNumber && phoneNumber.length === 11
+}
 
 type PhoneWithCodeProps = {
   onLogin: (phoneNumber: string, code: string) => void
@@ -67,20 +72,35 @@ const enum STEP {
   PHONE_WITH_CODE
 }
 
-export default function Phone() {
+type PhoneProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSuccess: (token: string) => void
+}
+export default function Phone(props: PhoneProps) {
   const [step, setStep] = useState(STEP.PHONE_NUMBER)
 
-  function onSend(phoneNumber: string) {
-    setStep(STEP.PHONE_WITH_CODE)
-    console.log(phoneNumber)
+  async function onSend(phoneNumber: string) {
+    // todo use message component to replace
+    if (!validatePhoneNumber(phoneNumber)) {
+      alert('请输入正确的手机号码')
+      return
+    }
+    try {
+      await sendVerificationCode(phoneNumber)
+      setStep(STEP.PHONE_WITH_CODE)
+    } catch (e) {
+      alert('发送验证码失败')
+    }
   }
 
-  function onLogin(phoneNumber: string, code: string) {
-    console.log(phoneNumber, code)
+  async function onLogin(phoneNumber: string, code: string) {
+    const token = await phoneLogin(phoneNumber, code)
+    props.onSuccess(token)
   }
 
   return (
-    <Dialog title="手机登录" open>
+    <Dialog title="手机登录" open={props.open} onOpenChange={props.onOpenChange}>
       {step === STEP.PHONE_NUMBER ? <PhoneNumber onSend={onSend} /> : <PhoneWithCode onSend={onSend} onLogin={onLogin} />}
     </Dialog>
   )
