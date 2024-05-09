@@ -95,7 +95,7 @@ export default function Home() {
   return (
     <>
       <div style={{backgroundImage: `url(${IMAGE_BG})`}} className="relative w-screen h-screen bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:w-screen after:h-screen after:bg-dark-77">
-        <div className="flex-[2] flex flex-col flex-shrink-0 items-center justify-center text-white z-10">
+        <div className="flex-[2] min-h-[640px] flex flex-col flex-shrink-0 items-center justify-center text-white z-10">
           <h1 className="font-semibold text-48">游攻略</h1>
           <p className="font-semibold text-24 mt-5">AI 帮你制作旅行攻略</p>
           <AddressInput value={location} onChange={setLocation} onSearch={onGenerate} />

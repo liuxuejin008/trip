@@ -8,7 +8,7 @@ export default function TravelList() {
   const [travelList, setTravelList] = useState<TravelLineListItem[]>([])
   const { toast, dismiss } = useToast()
 
-  useEffect(function () {
+  function getList() {
     const { id } = toast({
       title: '正在加载...',
       icon: 'loading'
@@ -32,8 +32,13 @@ export default function TravelList() {
     return () => {
       dismiss(id)
     }
+  }
+
+  useEffect(function () {
+    getList()
   }, [])
+
   return (
-    <List data={travelList} title='保存的行程' />
+    <List data={travelList} getData={getList} title='保存的行程' />
   )
 }

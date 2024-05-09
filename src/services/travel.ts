@@ -124,3 +124,7 @@ export type RewriteParams = {
 export function rewriteTravelLineInfo(data: RewriteParams) {
   return axios.post<TravelLineLineList>('/v1/traline/info/rewrite', data)
 }
+
+export function deleteTravelLine(id: string) {
+  return axios.post(`/v1/traline/delete/${id}`)
+}

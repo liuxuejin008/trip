@@ -8,7 +8,7 @@ export default function SearchList() {
   const [travelList, setTravelList] = useState<TravelLineListItem[]>([])
   const { toast, dismiss } = useToast()
 
-  useEffect(function () {
+  function getList() {
     const { id } = toast({
       title: '正在加载...',
       icon: 'loading'
@@ -32,8 +32,12 @@ export default function SearchList() {
     return () => {
       dismiss(id)
     }
+  }
+
+  useEffect(function () {
+    getList()
   }, [])
   return (
-    <List data={travelList} title='最近搜索' />
+    <List data={travelList} getData={getList} title='最近搜索' />
   )
 }
