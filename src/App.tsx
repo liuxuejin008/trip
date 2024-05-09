@@ -4,6 +4,7 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 import { lazy } from 'react'
+import { Toaster } from '@/components/Toast/toaster'
 
 const Home = lazy(() => import('./pages/Home'))
 const Result = lazy(() => import('./pages/Result'))
@@ -42,7 +43,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+    </>
   )
 }
 
