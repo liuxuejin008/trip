@@ -12,6 +12,7 @@ type ResultProps = {
 }
 export default function Result(props: ResultProps) {
   const [result, setResult] = useState<TravelResult>(props.data)
+  const [disabled, setDisabled] = useState(false)
 
   useEffect(function () {
     setResult(props.data)
@@ -22,8 +23,8 @@ export default function Result(props: ResultProps) {
       <div className="mb-16">
         <Overview data={result} />
         <div className="flex flex-col items-center">
-          <Actions data={result} setData={setResult} />
-          <CardList data={result} setData={setResult} />
+          <Actions disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
+          <CardList disabled={disabled} setDisabled={setDisabled} data={result} setData={setResult} />
           <Rate />
           <ShareButton/>
         </div>

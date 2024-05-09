@@ -63,11 +63,11 @@ axios.interceptors.request.use((config) => {
 let redirecting = false
 
 axios.interceptors.response.use((response) => {
-  if (response.status === 200) {
+  if (response.status === 200 && response.data.code === 200) {
     const data = response.data
     return data.data
   }
-  return Promise.reject(response)
+  return Promise.reject(response.data)
 }, (error) => {
   if (error.response.status === 401) {
     toast({

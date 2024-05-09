@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DateRangePicker from '@/components/DateRangePicker'
 import IconDownload from '@/components/Icons/Download'
 import IconMap from '@/components/Icons/Map'
@@ -13,11 +13,11 @@ type ActionButtonProps = {
   icon: React.ReactNode
   children: React.ReactNode
   onClick: () => void
-  loading?: boolean
+  disabled?: boolean
 }
 function ActionButton(props: ActionButtonProps) {
   return (
-    <button disabled={props.loading} onClick={props.onClick} className="mt-14 w-[232px] h-[71px] bg-dark-light rounded-36 flex items-center justify-center shadow-date border border-dark-light-5 text-white text-18 cursor-pointer">
+    <button disabled={props.disabled} onClick={props.onClick} className="mt-14 w-[232px] h-[71px] bg-dark-light rounded-36 flex items-center justify-center shadow-date border border-dark-light-5 text-white text-18 cursor-pointer">
       {props.icon}
       <span className="ml-7">{props.children}</span>
     </button>
@@ -27,15 +27,23 @@ function ActionButton(props: ActionButtonProps) {
 type ActionsProps = {
   data: TravelResult
   setData: (data: TravelResult) => void
-  refresh: () => Promise<TravelResult>
+  disabled: boolean
+  setDisabled: (disabled: boolean) => void
 }
 export default function Actions(props: ActionsProps) {
-  const [isSaving, setIsSaving] = useState(false)
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const { disabled, setDisabled } = props
   const [range, setRange] = useState<DateRange | undefined>({
     from: new Date(props.data.startTime),
     to: new Date(props.data.endTime)
   })
+
+
+  useEffect(function () {
+    setRange({
+      from: new Date(props.data.startTime),
+      to: new Date(props.data.endTime)
+    })
+  }, [props.data.startTime, props.data.endTime])
 
   const { toast, dismiss } = useToast()
   function noop () {
@@ -46,7 +54,7 @@ export default function Actions(props: ActionsProps) {
   }
 
   async function onSave () {
-    setIsSaving(true)
+    setDisabled(true)
     const { id } = toast({
       title: '正在保存...',
       icon: 'loading'
@@ -63,13 +71,13 @@ export default function Actions(props: ActionsProps) {
         icon: 'error'
       })
     } finally {
-      setIsSaving(false)
+      setDisabled(false)
       dismiss(id)
     }
   }
 
   async function onRefresh () {
-    setIsRefreshing(true)
+    setDisabled(true)
     const { id } = toast({
       title: '正在重新生成...',
       icon: 'loading'
@@ -81,13 +89,13 @@ export default function Actions(props: ActionsProps) {
         title: '重新生成成功',
         icon: 'success'
       })
-    } catch (error) {
+    } catch (error: any) {
       toast({
-        title: '重新生成失败',
+        title: error.message || '重新生成失败',
         icon: 'error'
       })
     } finally {
-      setIsRefreshing(false)
+      setDisabled(false)
       dismiss(id)
     }
   }
@@ -97,16 +105,16 @@ export default function Actions(props: ActionsProps) {
       <div className="mt-[74px] text-dark text-36 font-medium">旅程日期</div>
       <DateRangePicker disabled value={range} onChange={setRange} className="mt-14" />
       <div className="flex justify-center gap-8">
-        <ActionButton icon={<IconDownload className="w-[46px] h-[38px]" />} onClick={noop}>
+        <ActionButton disabled={disabled} icon={<IconDownload className="w-[46px] h-[38px]" />} onClick={noop}>
           下载行程
         </ActionButton>
-        <ActionButton icon={<IconMap className="w-10 h-[42px]" />} onClick={noop}>
+        <ActionButton disabled={disabled} icon={<IconMap className="w-10 h-[42px]" />} onClick={noop}>
           查看地图
         </ActionButton>
-        <ActionButton loading={isSaving} icon={<IconSave className="w-11 h-11" />} onClick={onSave}>
+        <ActionButton disabled={disabled} icon={<IconSave className="w-11 h-11" />} onClick={onSave}>
           保存行程
         </ActionButton>
-        <ActionButton loading={isRefreshing} icon={<IconRefresh className="w-[34px] h-[34px]"/>} onClick={onRefresh}>
+        <ActionButton disabled={disabled} icon={<IconRefresh className="w-[34px] h-[34px]"/>} onClick={onRefresh}>
           重新生成
         </ActionButton>
       </div>

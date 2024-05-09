@@ -73,7 +73,8 @@ export type TravelLineLineList = {
   /**
    * 具体行程id
    */
-  tralineLineId: string;
+  tralineId: string;
+  tralineInfoId?: string;
   /**
    * 旅行时间
    */
@@ -99,4 +100,17 @@ export function saveTravelLine(data: TravelResult) {
 
 export function refreshTravelLine(id: string) {
   return axios.get<TravelResult>(`/v1/traline/regeneration/${id}`)
+}
+
+export function regenerationTravelLineInfo(id: string) {
+  return axios.get<TravelLineLineList>(`/v1/traline/info/regeneration/${id}`)
+}
+
+export type TravelLineByTimeParams = {
+  location: string
+  tralineTime: string
+}
+
+export function addTravelLineByTime(params: TravelLineByTimeParams) {
+  return axios.get('/v1/traline/info/addByTime', {params})
 }

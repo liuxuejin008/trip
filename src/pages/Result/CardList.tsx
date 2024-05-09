@@ -2,6 +2,10 @@ import { useState } from 'react'
 import IconMinus from '@/components/Icons/Minus'
 import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
 import type { TravelResult, TravelLineLineList } from '@/services/travel'
+import { regenerationTravelLineInfo, addTravelLineByTime } from '@/services/travel'
+import { useToast } from '@/components/Toast/use-toast'
+import { getFormateDate } from '@/utils/date'
+import { add } from 'date-fns'
 
 function Recommend() {
   const list = [
@@ -21,13 +25,9 @@ function Recommend() {
   )
 }
 
-type ButtonProps = {
-  children: React.ReactNode
-  onClick?: () => void
-}
-function Button(props: ButtonProps) {
+function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) {
   return (
-    <button onClick={props.onClick} className="w-[178px] h-[54px] outline-none shadow-button bg-dark-light rounded-36 flex items-center justify-center text-18 font-light text-white">
+    <button {...props} className="w-[178px] cursor-pointer h-[54px] outline-none shadow-button bg-dark-light rounded-36 flex items-center justify-center text-18 font-light text-white">
       {props.children}
     </button>
   )
@@ -36,7 +36,7 @@ function Button(props: ButtonProps) {
 function EditButton() {
   const [open, setOpen] = useState(false)
   return (
-    <Popover open={open}  onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Button>修改</Button>
       </PopoverTrigger>
@@ -50,7 +50,7 @@ function EditButton() {
 }
 
 function numberToChinese(num: number) {
-  const chnNumChar = ['零','一','二','三','四','五','六','七','八','九']
+  const chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
   if (num < 10) {
     return chnNumChar[num]
   } else if (num === 10) {
@@ -70,41 +70,93 @@ function numberToChinese(num: number) {
   }
 }
 
+function normalizeContent(content: string) {
+  return content.replace(/\n/g, '<br/>')
+}
+
+function getDateByIndex(startTime: string, index: number) {
+  return getFormateDate(add(new Date(startTime), { days: index }))
+}
+
 type CardItemProps = {
   item: TravelLineLineList
   data: TravelResult
   index: number
   setData: (data: TravelResult) => void
+  disabled: boolean
+  setDisabled: (disabled: boolean) => void
 }
 function CardItem(props: CardItemProps) {
-  const { item, data, index, setData } = props
+  const { item, data, index, setData, disabled, setDisabled } = props
   const dayCount = numberToChinese(index + 1)
+  const { toast, dismiss } = useToast()
+
+  // 是否可以删除，如果不止一天，则可以删除
+  const isShowMinus = index !== 0 || data.tralineInfoList.length > 1
+
+  function onDelete() {
+    if (disabled) return
+    const list = data.tralineInfoList.filter((_, i) => i !== index)
+    setData({ ...data, dayNumber: list.length, endTime: getDateByIndex(data.startTime, list.length - 1), tralineInfoList: list })
+  }
+
+  async function onRegenerate() {
+    if (disabled) return
+    setDisabled(true)
+    const { id } = toast({ title: '重新生成中...', icon: 'loading' })
+    try {
+      const res = item.tralineInfoId ? await regenerationTravelLineInfo(item.tralineInfoId) : await addTravelLineByTime({location: data.location, tralineTime: getDateByIndex(data.startTime, index)})
+      setDisabled(false)
+      const list = data.tralineInfoList.map((line, i) => {
+        if (i === index) {
+          return res
+        }
+        return line
+      })
+      setData({ ...data, tralineInfoList: list })
+    } catch (e: any) {
+      toast({ title: e.message || '重新生成失败', icon: 'error' })
+      setDisabled(false)
+    } finally {
+      setDisabled(false)
+      dismiss(id)
+    }
+  }
+
+  async function addDate() {
+    if (disabled) return
+    setDisabled(true)
+    const { id } = toast({ title: '添加日期中...', icon: 'loading' })
+    try {
+      const res = await addTravelLineByTime({location: data.location, tralineTime: getDateByIndex(data.startTime, index + 1)})
+      data.tralineInfoList.splice(index + 1, 0, res)
+      setData({ ...data, tralineInfoList: [...data.tralineInfoList], dayNumber: data.tralineInfoList.length, endTime: getDateByIndex(data.startTime, data.tralineInfoList.length - 1) })
+    } catch (e: any) {
+      toast({ title: e.message || '添加日期失败', icon: 'error' })
+    } finally {
+      setDisabled(false)
+      dismiss(id)
+    }
+  }
 
   return (
     <div className="relative w-[1146px] box-border flex flex-col px-16 py-11 rounded-20 bg-primary-light">
       <div className="mt-20 flex items-center justify-between">
         <div className="text-48 text-white font-medium ml-6">第{dayCount}天</div>
         <div className="ml-20 text-white">
-          <div className="font-medium text-24">行程卡标题</div>
-          <div className="text-18 font-light">副标题/景点名字/08-12</div>
+          <div className="font-medium text-24">{item.title}</div>
+          <div className="text-18 font-light">{item.subTitle}</div>
         </div>
         <div className="flex items-end gap-5">
           <EditButton />
-          <Button onClick={() => props.onRefresh(props.data, props.index)}>重新生成</Button>
+          <Button disabled={disabled} onClick={onRegenerate}>重新生成</Button>
         </div>
       </div>
-      <div className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
-        早上，吃哪里早饭 <a href="#" className="text-primary">地点用这个颜色并且超链接到地图OR大众点评</a><br/>
-        到达哪里哪里，进行旅游 <a className="text-warn" href="#">地点用这个颜色，并且百度地图指引</a><br/>
-        午餐，在哪里午饭<br/>
-        到达哪里游玩<br/>
-        晚餐，在哪里晚餐<br/>
-        到达哪里游玩<br/>
-        就寝，在哪里睡觉 <a className="text-primary" href="#">睡觉地点也是用超链接美团OR大众点评</a>
+      <div dangerouslySetInnerHTML={{ __html: normalizeContent(item.content) }} className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
       </div>
-      {/* <Recommend /> */}
-      <button onClick={() => props.onAddDate(props.index)} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
-      <IconMinus onClick={() => props.onDelete(props.index)} className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />
+      {false && <Recommend />}
+      <button onClick={addDate} disabled={disabled} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
+      {isShowMinus && <IconMinus onClick={onDelete} className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />}
     </div>
   )
 }
@@ -112,13 +164,15 @@ function CardItem(props: CardItemProps) {
 type CardListProps = {
   data: TravelResult
   setData: (data: TravelResult) => void
+  disabled: boolean
+  setDisabled: (disabled: boolean) => void
 }
 export default function CardList(props: CardListProps) {
   const { tralineInfoList: list = [] } = props.data
   return (
     <div className="flex flex-col mt-20 gap-20">
       {list.map((item, index) => (
-        <CardItem item={item} data={props.data} setData={props.setData} index={index} />
+        <CardItem disabled={props.disabled} setDisabled={props.setDisabled} key={item.content + index} item={item} data={props.data} setData={props.setData} index={index} />
       ))}
     </div>
   )
