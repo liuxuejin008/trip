@@ -83,7 +83,7 @@ axios.interceptors.response.use((response) => {
       redirecting = true
       setTimeout(() => {
         window.location.href = '/'
-      }, 2000)
+      }, 500)
       return Promise.reject(error)
     }
   }
