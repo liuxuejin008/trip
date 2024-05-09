@@ -1,5 +1,6 @@
 import cs from 'classnames'
 import { useState } from 'react'
+import IconStar from '@/components/Icons/Star'
 
 type BaseRateProps = {
   className?: string
@@ -13,12 +14,12 @@ export function BaseRate(props: BaseRateProps) {
   return (
     <div onMouseLeave={() => setHoverIndex(null)} className={cs('flex gap-[26px]', props.className)}>
       {list.map(item => {
-        const isActive = hoverIndex && item <= hoverIndex || props.value && item <= props.value
+        const isActive = hoverIndex ? item <= hoverIndex : props.value && item <= props.value
         return (
-          <div onClick={() => props.onChange?.(item)} onMouseOver={() => setHoverIndex(item)} onMouseLeave={() => setHoverIndex(null)} key={item} className={cs('w-[57px] h-[53px] rounded-full cursor-pointer', {
-            'bg-warn-light': isActive,
-            'bg-gray-200': !isActive,
-          })}></div>
+          <IconStar onClick={() => props.onChange?.(item)} onMouseOver={() => setHoverIndex(item)} key={item} className={cs('w-[57px] h-[53px] cursor-pointer', {
+            'text-warn-light': isActive,
+            'text-dark-light': !isActive
+          })} />
         )
       })}
     </div>
