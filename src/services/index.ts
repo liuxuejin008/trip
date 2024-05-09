@@ -6,6 +6,16 @@ export const axios = Axios.create({
   baseURL: '/api',
 })
 
+export type Page<T extends object = any> = {
+  page: number
+  pageSize: number
+} & T
+
+export type PageResponse<T> = Page<{
+  total: number
+  list: T[]
+}>
+
 declare module 'axios' {
   export interface AxiosInstance {
     request<R = any, D = any>(config: AxiosRequestConfig<D>): Promise<R>
@@ -53,8 +63,11 @@ axios.interceptors.request.use((config) => {
 let redirecting = false
 
 axios.interceptors.response.use((response) => {
-  const data = response.data
-  return data.data
+  if (response.status === 200) {
+    const data = response.data
+    return data.data
+  }
+  return Promise.reject(response)
 }, (error) => {
   if (error.response.status === 401) {
     toast({
@@ -72,5 +85,5 @@ axios.interceptors.response.use((response) => {
       return Promise.reject(error)
     }
   }
-  return error
+  return Promise.reject(error)
 })

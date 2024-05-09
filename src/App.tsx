@@ -9,7 +9,8 @@ import { Toaster } from '@/components/Toast/toaster'
 const Home = lazy(() => import('./pages/Home'))
 const Result = lazy(() => import('./pages/Result'))
 const User = lazy(() => import('./pages/User'))
-const List = lazy(() => import('./pages/User/List'))
+const TravelList = lazy(() => import('./pages/User/TravelList'))
+const SearchList = lazy(() => import('./pages/User/SearchList'))
 const Settings = lazy(() => import('./pages/User/Settings'))
 
 const router = createBrowserRouter([
@@ -27,11 +28,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/user',
-        element: <List title='保存的行程' />
+        element: <TravelList />
       },
       {
         path: '/user/search',
-        element: <List title='最近搜索' />
+        element: <SearchList />
       },
       {
         path: '/user/settings',
