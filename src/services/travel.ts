@@ -1,5 +1,8 @@
+import Axios from 'axios'
 import { axios } from '.'
 import type { Page, PageResponse } from './'
+import { downloadFile } from '@/utils/file'
+import { getToken } from '@/utils/token'
 
 export type TravelLineListItem = {
   id: string
@@ -129,4 +132,18 @@ export function rewriteTravelLineInfo(data: RewriteParams) {
 
 export function deleteTravelLine(id: string) {
   return axios.post(`/v1/traline/delete/${id}`)
+}
+
+
+export function downloadTravelLine(id: string, fileName: string) {
+  return Axios({
+    url: `/api/v1/traline/exportPdf/${id}`,
+    method: "GET",
+    responseType: "blob",
+    headers: {
+      Authorization: getToken()
+    }
+  }).then((response) => {
+    downloadFile(response, fileName)
+  })
 }

@@ -8,12 +8,12 @@ import Footer from '@/components/Footer'
 import type { TravelResult } from '@/services/travel'
 
 type ResultProps = {
-  data: TravelResult
+  data?: TravelResult
   startLoop: () => void
   isLoading: boolean
 }
 export default function Result(props: ResultProps) {
-  const [result, setResult] = useState<TravelResult>(props.data)
+  const [result, setResult] = useState<TravelResult | undefined>(props.data)
   const [disabled, setDisabled] = useState(false)
 
   useEffect(function () {

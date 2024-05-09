@@ -7,7 +7,7 @@ import IconSave from '@/components/Icons/Save'
 import type { TravelResult } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import type { DateRange } from 'react-day-picker'
-import { saveTravelLine, refreshTravelLine } from '@/services/travel'
+import { saveTravelLine, refreshTravelLine, downloadTravelLine } from '@/services/travel'
 
 type ActionButtonProps = {
   icon: React.ReactNode
@@ -25,7 +25,7 @@ function ActionButton(props: ActionButtonProps) {
 }
 
 type ActionsProps = {
-  data: TravelResult
+  data?: TravelResult
   setData: (data: TravelResult) => void
   disabled: boolean
   setDisabled: (disabled: boolean) => void
@@ -34,17 +34,18 @@ type ActionsProps = {
 export default function Actions(props: ActionsProps) {
   const { disabled, setDisabled } = props
   const [range, setRange] = useState<DateRange | undefined>({
-    from: new Date(props.data.startTime),
-    to: new Date(props.data.endTime)
+    from: new Date(props.data?.startTime || new Date()),
+    to: new Date(props.data?.endTime || new Date())
   })
 
 
   useEffect(function () {
+    if (!props.data) return
     setRange({
       from: new Date(props.data.startTime),
       to: new Date(props.data.endTime)
     })
-  }, [props.data.startTime, props.data.endTime])
+  }, [props.data?.startTime, props.data?.endTime])
 
   const { toast, dismiss } = useToast()
   function noop () {
@@ -61,7 +62,7 @@ export default function Actions(props: ActionsProps) {
       icon: 'loading'
     })
     try {
-      await saveTravelLine(props.data)
+      await saveTravelLine(props.data!)
       toast({
         title: '保存成功',
         icon: 'success'
@@ -84,7 +85,7 @@ export default function Actions(props: ActionsProps) {
       icon: 'loading'
     })
     try {
-      await refreshTravelLine(props.data.tralineId)
+      await refreshTravelLine(props.data!.tralineId)
       await props.startLoop()
       toast({
         title: '重新生成成功',
@@ -101,12 +102,29 @@ export default function Actions(props: ActionsProps) {
     }
   }
 
+  async function onDownload () {
+    const { id } = toast({
+      title: '正在下载...',
+      icon: 'loading'
+    })
+    try {
+      await downloadTravelLine(props.data!.tralineId, `${props.data!.location} ${props.data!.dayNumber} 天行程.pdf`)
+    } catch (e: any) {
+      toast({
+        title: e.message || '下载失败',
+        icon: 'error'
+      })
+    } finally {
+      dismiss(id)
+    }
+  }
+
   return (
     <>
       <div className="mt-[74px] text-dark text-36 font-medium">旅程日期</div>
       <DateRangePicker disabled value={range} onChange={setRange} className="mt-14" />
       <div className="flex justify-center gap-8">
-        <ActionButton disabled={disabled} icon={<IconDownload className="w-[46px] h-[38px]" />} onClick={noop}>
+        <ActionButton disabled={disabled} icon={<IconDownload className="w-[46px] h-[38px]" />} onClick={onDownload}>
           下载行程
         </ActionButton>
         <ActionButton disabled={disabled} icon={<IconMap className="w-10 h-[42px]" />} onClick={noop}>

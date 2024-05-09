@@ -20,9 +20,9 @@ export default function GenerateResult() {
           const result = await getTravelLineInfoById(params.id!)
           setResult(result)
           if (result.status === 3) {
-            setTimeout(loop, 1000)
-          } else if (timer.current) {
-            clearTimeout(timer.current)
+            timer.current = setTimeout(loop, 1000)
+          } else {
+            timer.current && clearTimeout(timer.current)
             timer.current = null
             resolve(result)
           }
@@ -51,6 +51,7 @@ export default function GenerateResult() {
         icon: 'error'
       })
     } finally {
+      console.log('finally')
       isFetching.current = false
       setIsLoading(false)
       dismiss(id)
@@ -59,13 +60,14 @@ export default function GenerateResult() {
 
 
   useEffect(function () {
-    loopResult()
+    setTimeout(loopResult)
     return () => {
-      timer.current && clearTimeout(timer.current)
+        timer.current && clearTimeout(timer.current)
+        timer.current = null
+        setIsLoading(false)
     }
   }, [params.id])
 
-  if (!result) return null
 
   return (
     <Result data={result} startLoop={startLoop} isLoading={isLoading} />

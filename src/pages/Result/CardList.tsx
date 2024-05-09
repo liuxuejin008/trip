@@ -101,7 +101,7 @@ function getDateByIndex(startTime: string, index: number) {
 
 type CardItemProps = {
   item: TravelLineLineList
-  data: TravelResult
+  data?: TravelResult
   index: number
   setData: (data: TravelResult) => void
   disabled: boolean
@@ -115,16 +115,16 @@ function CardItem(props: CardItemProps) {
   const $content = useRef<HTMLDivElement>(null)
 
   // 是否可以删除，如果不止一天，则可以删除
-  const isShowMinus = index !== 0 || data.tralineInfoList.length > 1
+  const isShowMinus = index !== 0 || data && data.tralineInfoList?.length > 1
 
   function onDelete() {
-    if (disabled) return
+    if (disabled || !data) return
     const list = data.tralineInfoList.filter((_, i) => i !== index)
     setData({ ...data, dayNumber: list.length, endTime: getDateByIndex(data.startTime, list.length - 1), tralineInfoList: list })
   }
 
   async function onRegenerate() {
-    if (disabled) return
+    if (disabled || !data) return
     setDisabled(true)
     const { id } = toast({ title: '重新生成中...', icon: 'loading' })
     try {
@@ -147,7 +147,7 @@ function CardItem(props: CardItemProps) {
   }
 
   async function addDate() {
-    if (disabled) return
+    if (disabled || !data) return
     setDisabled(true)
     const { id } = toast({ title: '添加日期中...', icon: 'loading' })
     try {
@@ -163,7 +163,7 @@ function CardItem(props: CardItemProps) {
   }
 
   async function onRewrite(content: string) {
-    if (disabled) return
+    if (disabled || !data) return
     setDisabled(true)
     const { id } = toast({ title: '修改中...', icon: 'loading' })
     try {
@@ -200,6 +200,7 @@ function CardItem(props: CardItemProps) {
   }
 
   function onSave () {
+    if (!data) return
     setIsEdit(false)
     const content = $content.current!.innerHTML
     const list = data.tralineInfoList.map((line, i) => {
@@ -235,13 +236,13 @@ function CardItem(props: CardItemProps) {
 }
 
 type CardListProps = {
-  data: TravelResult
+  data?: TravelResult
   setData: (data: TravelResult) => void
   disabled: boolean
   setDisabled: (disabled: boolean) => void
 }
 export default function CardList(props: CardListProps) {
-  const { tralineInfoList: list = [] } = props.data
+  const { tralineInfoList: list = [] } = props.data || {}
   return (
     <div className="flex flex-col mt-20 gap-20">
       {list.map((item, index) => (
