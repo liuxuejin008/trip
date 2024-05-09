@@ -6,11 +6,16 @@ import {
 import { lazy } from 'react'
 
 const Home = lazy(() => import('./pages/Home'))
+const Result = lazy(() => import('./pages/Result'))
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />
+  },
+  {
+    path: '/result/:id',
+    element: <Result />
   }
 ])
 

@@ -1,3 +1,5 @@
+import plugin from 'tailwindcss/plugin'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -7,20 +9,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#515DE7',
-        'primary-light': '#747DEC',
-        dark: '#1D2A3B',
-        'dark-light': '#4A5562',
-        'dark-light-1': '#1C2A3A',
-        'dark-light-2': '#1E2A3C',
-        'dark-light-3': '#1E283C',
-        'dark-light-4': '#D8D8D8',
-        'dark-light-5': '#979797',
-        'dark-77': 'rgba(29, 42, 59, 0.77)',
-        warn: '#FECB3E',
-        'warn-light': '#FED565',
-        error: '#FF752B',
-        'error-light': '#FF9055',
+        primary: '#515DE7/* #515DE7 */',
+        'primary-light': '#747DEC/* #747DEC */',
+        'primary-dark': '#7C83A4/* #7C83A4 */',
+        dark: '#1D2A3B/* #1D2A3B */',
+        'dark-light': '#4A5562/* #4A5562 */',
+        'dark-light-1': '#1C2A3A/* #1C2A3A */',
+        'dark-light-2': '#1E2A3C/* #1E2A3C */',
+        'dark-light-3': '#1E283C/* #1E283C */',
+        'dark-light-4': '#D8D8D8/* #D8D8D8 */',
+        'dark-light-5': '#979797/* #979797 */',
+        'dark-77': 'rgba(29, 42, 59, 0.77)/* rgba(29, 42, 59, 0.77) */',
+        'dark-light-78': 'rgba(74, 85, 98, 0.78) /* rgba(74, 85, 98, 0.78) */',
+        warn: '#FECB3E/* #FECB3E */',
+        'warn-light': '#FED565/* #FED565 */',
+        error: '#FF752B/* #FF752B */',
+        'error-light': '#FF9055/* #FF9055 */',
       },
       fontSize: {
         '48': '48px',
@@ -50,9 +54,21 @@ export default {
       transitionProperty: {
         'bg': 'background-color',
         'border': 'border-color',
+      },
+      textShadow: {
+        'dark': '3px 3px 4px #000000'
       }
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities({
+        'text-shadow': (value) => ({
+          textShadow: value,
+        }),
+      },
+        { values: theme('textShadow') })
+    })
+  ],
 }
 
