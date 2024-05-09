@@ -41,12 +41,14 @@ export default {
       },
       borderRadius: {
         '18': '18px',
+        '20': '20px',
         '30': '30px',
         '36': '36px',
       },
       boxShadow: {
         button: '3px 3 4px 0px rgba(0,0,0,0.5)',
-        date: '5px 5 4px 0px rgba(0,0,0,0.6)'
+        date: '5px 5 4px 0px rgba(0,0,0,0.6)',
+        pic: '2px 2 4px 0px rgba(0,0,0,0.5)'
       },
       backgroundImage: {
         date: 'linear-gradient( 180deg, rgba(58,61,75,0.82) 0%, #1D2A3B 100%)'
