@@ -1,3 +1,5 @@
+import IconMinus from '@/components/Icons/Minus'
+
 function Recommend() {
   const list = [
     'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng23c6a51ed1e51317604113258093c8755e514ca5797c027c447d976fcb56db12',
@@ -53,6 +55,7 @@ function CardItem() {
       </div>
       <Recommend />
       <button className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">添加日期</button>
+      <IconMinus className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />
     </div>
   )
 }

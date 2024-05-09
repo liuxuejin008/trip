@@ -25,6 +25,7 @@ export default {
         'warn-light': '#FED565/* #FED565 */',
         error: '#FF752B/* #FF752B */',
         'error-light': '#FF9055/* #FF9055 */',
+        'error-close': '#f87171/* #f87171 */',
       },
       fontSize: {
         '48': '48px',
