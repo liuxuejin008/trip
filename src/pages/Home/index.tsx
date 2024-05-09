@@ -1,4 +1,4 @@
-import { useState, lazy } from 'react'
+import { useState } from 'react'
 import DateRangePicker from '@/components/DateRangePicker'
 import IMAGE_BG from '@/assets/images/home_bg.png'
 import IconGo from '@/components/Icons/Go'
