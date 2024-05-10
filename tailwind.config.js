@@ -11,14 +11,19 @@ export default {
       colors: {
         primary: '#515DE7/* #515DE7 */',
         'primary-light': '#747DEC/* #747DEC */',
+        'primary-light-1': '#F6F5FF/* #F6F5FF */',
+        'primary-light-2': '#624AFF/* #624AFF */',
         'primary-dark': '#7C83A4/* #7C83A4 */',
         dark: '#1D2A3B/* #1D2A3B */',
+        dark2: '#2D3240/* #2D3240 */',
         'dark-light': '#4A5562/* #4A5562 */',
         'dark-light-1': '#1C2A3A/* #1C2A3A */',
         'dark-light-2': '#1E2A3C/* #1E2A3C */',
         'dark-light-3': '#1E283C/* #1E283C */',
         'dark-light-4': '#D8D8D8/* #D8D8D8 */',
         'dark-light-5': '#979797/* #979797 */',
+        'dark-light-6': '#959FB6/* #959FB6 */',
+        'dark-light-7': '#C0C1C6/* #C0C1C6 */',
         'dark-77': 'rgba(29, 42, 59, 0.77)/* rgba(29, 42, 59, 0.77) */',
         'dark-light-78': 'rgba(74, 85, 98, 0.78) /* rgba(74, 85, 98, 0.78) */',
         warn: '#FECB3E/* #FECB3E */',
@@ -48,6 +53,8 @@ export default {
         '20': '20px',
         '30': '30px',
         '36': '36px',
+        '56': '56px',
+        '64': '64px',
       },
       boxShadow: {
         button: '3px 3 4px 0px rgba(0,0,0,0.5)',
@@ -56,7 +63,8 @@ export default {
         button2: '3px 3 2px 0px rgba(0,0,0,0.6)',  
       },
       backgroundImage: {
-        date: 'linear-gradient( 180deg, rgba(58,61,75,0.82) 0%, #1D2A3B 100%)'
+        date: 'linear-gradient( 180deg, rgba(58,61,75,0.82) 0%, #1D2A3B 100%)',
+        line: 'linear-gradient( 180deg, rgba(146,162,255,0) 0%, #6459FF 100%)'
       },
       transitionProperty: {
         'bg': 'background-color',
