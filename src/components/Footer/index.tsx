@@ -1,6 +1,11 @@
-export default function Footer() {
+import cs from 'classnames'
+
+type FooterProps = {
+  className?: string
+}
+export default function Footer(props: FooterProps) {
   return (
-    <footer className="w-screen bg-dark flex flex-col items-center h-[1350px]">
+    <footer className={cs('w-screen bg-dark flex flex-col items-center h-[1350px]', props.className)}>
       <div className="mt-[140px] text-center">
         <div className="text-primary-light text-48 font-medium">游攻略</div>
         <div className="text-32 text-white mt-9">AI 旅行攻略</div>

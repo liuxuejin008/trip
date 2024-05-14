@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 export default function Header() {
   return (
-    <header className="group dark fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-center bg-transparent border-b border-black/10">
+    <header className="group fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-center bg-transparent border-b border-black/10">
       <div className="w-[1146px] flex justify-between items-center">
         <Link to="/">
           <IconLogo className="w-[81px] h-[26px] text-dark group-[.dark]:text-white" />

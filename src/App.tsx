@@ -13,6 +13,7 @@ const TravelList = lazy(() => import('./pages/User/TravelList'))
 const SearchList = lazy(() => import('./pages/User/SearchList'))
 const Settings = lazy(() => import('./pages/User/Settings'))
 const ResultPlus = lazy(() => import('./pages/ResultPlus'))
+const Detail = lazy(() => import('./pages/Detail'))
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/result',
     element: <ResultPlus />
+  },
+  {
+    path: '/detail',
+    element: <Detail />
   },
   {
     path: '/user',
