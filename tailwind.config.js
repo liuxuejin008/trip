@@ -35,6 +35,7 @@ export default {
         'error-delete': '#BD2626/* #BD2626 */',
         'gray-999': '#999999/* #999999 */',
         'gray-666': '#666666/* #666666 */',
+        'gray-border': '#DFE3E8/* #DFE3E8 */',
       },
       fontSize: {
         '88': '88px',

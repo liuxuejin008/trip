@@ -32,6 +32,7 @@ function TripItem() {
 
 type TripCardProps = {
   day: string
+  id: string
 }
 export default function TripCard(props: TripCardProps) {
   const id = useMemo(() => 'map_' + Math.random().toString(36).slice(2), [])
@@ -60,7 +61,7 @@ export default function TripCard(props: TripCardProps) {
   }, [id])
 
   return (
-    <div className="w-[1146px]">
+    <div id={props.id} className="w-[1146px]">
       <CardHeader
         number={props.day}
         title="初识涠洲，海岛风情"

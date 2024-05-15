@@ -1,12 +1,16 @@
 import IconLogo from '@/components/Icons/Logo'
 import IconUser from '@/components/Icons/User'
 import IconArrowDown from '@/components/Icons/ArrowDown'
+import cs from 'classnames'
 
 import { Link } from 'react-router-dom'
 
-export default function Header() {
+type HeaderProps = {
+  className?: string
+}
+export default function Header(props: HeaderProps) {
   return (
-    <header className="group fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-center bg-transparent border-b border-black/10">
+    <header className={cs('transition-all group fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-center bg-transparent border-b border-black/10', props.className)}>
       <div className="w-[1146px] flex justify-between items-center">
         <Link to="/">
           <IconLogo className="w-[81px] h-[26px] text-dark group-[.dark]:text-white" />
