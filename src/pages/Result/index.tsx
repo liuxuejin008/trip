@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom'
 import type { TravelResult } from '@/services/travel'
 import { getTravelLineInfoById } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
+import { useTranslation } from 'react-i18next'
 
 export default function GenerateResult() {
+  const { t } = useTranslation()
   const { toast, dismiss } = useToast()
   const params = useParams<{ id: string }>()
   const isFetching = useRef(false)
@@ -39,7 +41,7 @@ export default function GenerateResult() {
     isFetching.current = true
     setResult(undefined)
     const { id } = toast({
-      title: '正在获取生成结果...',
+      title: t('getingResult'),
       icon: 'loading'
     })
     setIsLoading(true)
@@ -47,7 +49,7 @@ export default function GenerateResult() {
       await startLoop()
     } catch (e: any) {
       toast({
-        title: e.message || '获取失败',
+        title: e.message || t('fetchFail'),
         icon: 'error'
       })
     } finally {

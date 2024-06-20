@@ -9,6 +9,7 @@ import { sendVerificationCode, phoneLogin } from '@/services/user'
 import { useToast } from '@/components/Toast/use-toast'
 import { Token } from '@/utils/token'
 import cs from 'classnames'
+import { useTranslation } from 'react-i18next'
 
 function validatePhoneNumber(phoneNumber: string) {
   return phoneNumber && phoneNumber.length === 11
@@ -22,6 +23,7 @@ type PhoneWithCodeProps = {
   phoneNumber: string
 }
 function PhoneWithCode(props: PhoneWithCodeProps) {
+  const { t } = useTranslation()
   const [phoneNumber, setPhoneNumber] = useState(props.phoneNumber)
   const [code, setCode] = useState('')
   const { count, start } = useCountDown(60)
@@ -42,17 +44,17 @@ function PhoneWithCode(props: PhoneWithCodeProps) {
   return (
     <>
       <div className="flex flex-col gap-8">
-        <FormItem label="手机号码">
-          <Input value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} placeholder="请输入手机号码" />
+        <FormItem label={t('phoneNumber')}>
+          <Input value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} placeholder={t('phoneNumberPlaceholder')} />
         </FormItem>
-        <FormItem label="验证码">
-          <Input value={code} onChange={e => setCode(e.target.value)} placeholder="请输入验证码" />
+        <FormItem label={t('code')}>
+          <Input value={code} onChange={e => setCode(e.target.value)} placeholder={t('codePlaceholder')} />
         </FormItem>
-        <div className="font-semibold text-20 ml-48">已发送到你的手机，请在短信中查收</div>
+        <div className="font-semibold text-20 ml-48">{t('phoneCodeSended')}</div>
       </div>
       <DialogFooter>
-        <Button disabled={props.logining} onClick={() => props.onLogin(phoneNumber, code)} className={cs('bg-primary-light', props.logining && 'cursor-wait')}>登录</Button>
-        <Button onClick={onSend} disabled={!!count || props.sending} className={count || props.sending ? 'bg-dark-light' : 'bg-error'}>{count ? `已发送验证码${count}s` : '发送验证码'}</Button>
+        <Button disabled={props.logining} onClick={() => props.onLogin(phoneNumber, code)} className={cs('bg-primary-light', props.logining && 'cursor-wait')}>{t('login')}</Button>
+        <Button onClick={onSend} disabled={!!count || props.sending} className={count || props.sending ? 'bg-dark-light' : 'bg-error'}>{count ? t('codeSended', {count}) : t('sendCode')}</Button>
       </DialogFooter>
     </>
   )
@@ -65,14 +67,15 @@ type PhoneNumberProps = {
 
 function PhoneNumber(props: PhoneNumberProps) {
   const [phoneNumber, setPhoneNumber] = useState('')
+  const { t } = useTranslation()
 
   return (
     <>
-      <FormItem label="手机号码">
-        <Input value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} placeholder="请输入手机号码" />
+      <FormItem label={t('phoneNumber')}>
+        <Input value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} placeholder={t('phoneNumberPlaceholder')} />
       </FormItem>
       <DialogFooter>
-        <Button disabled={props.sending} onClick={() => props.onSend(phoneNumber)} className={cs('bg-primary-light', props.sending && 'cursor-wait')}>发送验证码</Button>
+        <Button disabled={props.sending} onClick={() => props.onSend(phoneNumber)} className={cs('bg-primary-light', props.sending && 'cursor-wait')}>{t('sendCode')}</Button>
       </DialogFooter>
     </>
   )
@@ -89,6 +92,7 @@ type PhoneProps = {
   onSuccess: (token: Token) => void
 }
 export default function Phone(props: PhoneProps) {
+  const { t } = useTranslation()
   const {toast, dismiss} = useToast()
   const [step, setStep] = useState(STEP.PHONE_NUMBER)
   const [sending, setSending] = useState(false)
@@ -100,7 +104,7 @@ export default function Phone(props: PhoneProps) {
     setPhoneNumber(phoneNumber)
     if (!validatePhoneNumber(phoneNumber)) {
       toast({
-        title: '请输入正确的手机号码',
+        title: t('phoneNumberInvalid'),
         icon: 'error',
       })
       return
@@ -110,12 +114,12 @@ export default function Phone(props: PhoneProps) {
       await sendVerificationCode(phoneNumber)
       setStep(STEP.PHONE_WITH_CODE)
       toast({
-        title: '发送验证码成功',
+        title: t('sendCodeSuccess'),
         icon: 'success',
       })
     } catch (e: any) {
       toast({
-        title: e.message || '发送验证码失败',
+        title: e.message || t('sendCodeFail'),
         icon: 'error',
       })
     } finally {
@@ -127,19 +131,19 @@ export default function Phone(props: PhoneProps) {
     try {
       setLogining(true)
       const { id } = toast({
-        title: '正在登录...',
+        title: t('logining'),
         icon: 'loading',
       })
       const token = await phoneLogin(phoneNumber, code)
       props.onSuccess(token)
       dismiss(id)
       toast({
-        title: '登录成功',
+        title: t('loginSuccess'),
         icon: 'success',
       })
     } catch (e: any) {
       toast({
-        title: e.message || '登录失败',
+        title: e.message || t('loginFail'),
         icon: 'error',
       })
     } finally {
@@ -148,7 +152,7 @@ export default function Phone(props: PhoneProps) {
   }
 
   return (
-    <Dialog title="手机登录" open={props.open} onOpenChange={props.onOpenChange}>
+    <Dialog title={t('phoneNumberLogin')} open={props.open} onOpenChange={props.onOpenChange}>
       {step === STEP.PHONE_NUMBER ? <PhoneNumber sending={sending} onSend={onSend} /> : <PhoneWithCode phoneNumber={phoneNumber} sending={sending} logining={logining} onSend={onSend} onLogin={onLogin} />}
     </Dialog>
   )

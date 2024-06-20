@@ -11,6 +11,7 @@ import { getFormateDate } from '@/utils/date'
 import { generateTravelLine } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import { isBefore } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 function setPersistentLocation(data: { location: string, startTime: string, endTime: string }) {
   localStorage.setItem('location', data.location)
@@ -36,6 +37,7 @@ type AddressInputProps = {
   onSearch: () => void
 }
 function AddressInput(props: AddressInputProps) {
+  const { t } = useTranslation()
   function onKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       props.onSearch()
@@ -43,7 +45,7 @@ function AddressInput(props: AddressInputProps) {
   }
   return (
     <div className="relative mt-6">
-      <input placeholder="去哪里?" value={props.value} onKeyUp={onKeyUp} onChange={e => props.onChange(e.target.value)} className="bg-dark-light-4 text-dark-light border-none outline-none w-[396px] h-[77px] rounded-36 text-36 font-medium box-border px-11 placeholder:text-dark-light" />
+      <input placeholder={t('addressPlaceholder')} value={props.value} onKeyUp={onKeyUp} onChange={e => props.onChange(e.target.value)} className="bg-dark-light-4 text-dark-light border-none outline-none w-[396px] h-[77px] rounded-36 text-36 font-medium box-border px-11 placeholder:text-dark-light" />
       {/* todo icon */}
       <i onClick={props.onSearch} className="absolute w-[62px] cursor-pointer bg-primary flex items-center justify-center h-[62px] rounded-full top-1/2 -translate-y-1/2 right-2.5">
         <IconGo className="w-[52px] text-warn-light" />
@@ -53,14 +55,16 @@ function AddressInput(props: AddressInputProps) {
 }
 
 function ProfileButton() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   return (
-    <button onClick={() => navigate('/user/settings')} className="bg-primary-light text-white flex items-center justify-center w-[150px] h-[60px] rounded-30 shadow-button font-medium text-24 outline-none mt-11 hover:bg-primary transition-bg">个人中心</button>
+    <button onClick={() => navigate('/user/settings')} className="bg-primary-light text-white flex items-center justify-center m-w-[150px] px-4 h-[60px] rounded-30 shadow-button font-medium text-24 outline-none mt-11 hover:bg-primary transition-bg">{t('accountCenter')}</button>
   )
 }
 
 export default function Home() {
+  const { t } = useTranslation()
   const preLocationData = getPersistentLocation()
   const [searchParams] = useSearchParams()
   const [open, setOpen] = useState<boolean>(searchParams.get('login') === 'true')
@@ -85,14 +89,14 @@ export default function Home() {
     const endTime = getFormateDate(range?.to)
     if (!location) {
       toast({
-        title: '请输入旅行地点',
+        title: t('addressRequired'),
         icon: 'error'
       })
       return
     }
     if (!startTime || !endTime) {
       toast({
-        title: '请选择旅行日期',
+        title: t('dateRequired'),
         icon: 'error'
       })
       return
@@ -101,7 +105,7 @@ export default function Home() {
     setPersistentLocation({ location, startTime, endTime })
 
     const { id } = toast({
-      title: '生成中...',
+      title: t('generating'),
       icon: 'loading'
     })
 
@@ -110,7 +114,7 @@ export default function Home() {
       navigate(`/result/${tralineId}`)
     } catch (e) {
       toast({
-        title: '生成失败',
+        title: t('genFail'),
         icon: 'error'
       })
     } finally {
@@ -122,13 +126,13 @@ export default function Home() {
     <>
       <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative min-w-screen min-h-screen bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 after:bg-dark-77">
         <div className="flex-[2] min-h-[640px] flex flex-col flex-shrink-0 items-center justify-center text-white z-10">
-          <h1 className="font-semibold text-48">游攻略</h1>
-          <p className="font-semibold text-24 mt-5">AI 帮你制作旅行攻略</p>
+          <h1 className="font-semibold text-48">{t('title')}</h1>
+          <p className="font-semibold text-24 mt-5">{t('description')}</p>
           <AddressInput value={location} onChange={setLocation} onSearch={onGenerate} />
-          <p className="font-semibold text-36 mt-11">旅程日期</p>
+          <p className="font-semibold text-36 mt-11">{t('tourDate')}</p>
           <DateRangePicker value={range} onChange={setRange} className="mt-5" />
           {isLogin && <ProfileButton />}
-          {!isLogin && <button onClick={() => setOpen(true)} className="text-18 mt-11 hover:underline cursor-pointer outline-none">现在登录</button>}
+          {!isLogin && <button onClick={() => setOpen(true)} className="text-18 mt-11 hover:underline cursor-pointer outline-none">{t('loginNow')}</button>}
         </div>
       </div>
       <PhoneLogin open={open} onOpenChange={setOpen} onSuccess={onSuccess} />

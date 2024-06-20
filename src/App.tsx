@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { Toaster } from '@/components/Toast/toaster'
+import { Lang } from '@/components/Lang'
 
 const Home = lazy(() => import('./pages/Home'))
 const Result = lazy(() => import('./pages/Result'))
@@ -47,6 +48,7 @@ function App() {
     <Suspense>
       <RouterProvider router={router} />
       <Toaster />
+      <Lang />
     </Suspense>
   )
 }

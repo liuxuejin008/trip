@@ -3,6 +3,7 @@ import type { TravelLineListItem } from '@/services/travel'
 import { deleteTravelLine } from '@/services/travel'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '@/components/Toast/use-toast'
+import { useTranslation } from 'react-i18next'
 
 type ListItemProps = {
   data: TravelLineListItem
@@ -10,6 +11,7 @@ type ListItemProps = {
 }
 
 function ListItem(props: ListItemProps) {
+  const { t } = useTranslation()
   const { data } = props
   const { toast, dismiss } = useToast()
   const navigate = useNavigate()
@@ -20,19 +22,19 @@ function ListItem(props: ListItemProps) {
 
   async function onDelete () {
     const { id } = toast({
-      title: '正在删除...',
+      title: t('deleting'),
       icon: 'loading'
     })
     try {
       await deleteTravelLine(data.id)
       toast({
-        title: '删除成功',
+        title: t('deleteSuccess'),
         icon: 'success'
       })
       props.getData()
     } catch (error: any) {
       toast({
-        title: error.message || '删除失败',
+        title: error.message || t('deleteFail'),
         icon: 'error'
       })
     } finally {
@@ -55,7 +57,8 @@ type ListProps = {
 }
 
 export default function List(props: ListProps) {
-
+  const { t } = useTranslation()
+  
   return (
     <div className="text-primary-light">
       <h2 className="text-24">{props.title}</h2>
@@ -65,7 +68,7 @@ export default function List(props: ListProps) {
             <ListItem getData={props.getData} key={item.id} data={item} />
           ))}
         </ul>
-      ) : <div>暂无数据</div>}
+      ) : <div>{t('noData')}</div>}
 
     </div>
   )

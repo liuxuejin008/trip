@@ -5,6 +5,7 @@ import FormItem from './FormItem'
 import Button from './Button'
 import Dialog from './BaseDialog'
 import useCountDown from '@/hooks/useCountDown'
+import { useTranslation } from 'react-i18next'
 
 type EmailWithCodeProps = {
   onLogin: (email: string, code: string) => void
@@ -14,7 +15,7 @@ function EmailWithCode(props: EmailWithCodeProps) {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const { count, start } = useCountDown(60)
-
+  const { t } = useTranslation()
   useEffect(function () {
     start()
   }, [])
@@ -27,17 +28,17 @@ function EmailWithCode(props: EmailWithCodeProps) {
   return (
     <>
       <div className="flex flex-col gap-8">
-        <FormItem label="邮箱账号">
-          <Input value={email} onChange={e => setEmail(e.target.value)} placeholder="请输入邮箱账号" />
+        <FormItem label={t('email')}>
+          <Input value={email} onChange={e => setEmail(e.target.value)} placeholder={t('emailPlaceholder')} />
         </FormItem>
-        <FormItem label="验证码">
-          <Input value={code} onChange={e => setCode(e.target.value)} placeholder="请输入验证码" />
+        <FormItem label={t('code')}>
+          <Input value={code} onChange={e => setCode(e.target.value)} placeholder={t('codePlaceholder')} />
         </FormItem>
-        <div className="font-semibold text-20 ml-48">已发送到你的邮箱，请在邮箱中查收</div>
+        <div className="font-semibold text-20 ml-48">{t('emailCodeTip')}</div>
       </div>
       <DialogFooter>
-        <Button onClick={() => props.onLogin(email, code)} className="bg-primary-light">登录</Button>
-        <Button onClick={onSend} disabled={!!count} className={count ? 'bg-dark-light' : 'bg-error'}>{count ? `已发送验证码${count}s` : '发送验证码'}</Button>
+        <Button onClick={() => props.onLogin(email, code)} className="bg-primary-light">{t('login')}</Button>
+        <Button onClick={onSend} disabled={!!count} className={count ? 'bg-dark-light' : 'bg-error'}>{count ? t('codeSended', {count}) : t('sendCode')}</Button>
       </DialogFooter>
     </>
   )
@@ -49,14 +50,15 @@ type EmailAddressProps = {
 
 function EmailAddress(props: EmailAddressProps) {
   const [email, setEmail] = useState('')
+  const { t } = useTranslation()
 
   return (
     <>
-      <FormItem label="邮箱账号">
-        <Input value={email} onChange={e => setEmail(e.target.value)} placeholder="请输入邮箱账号" />
+      <FormItem label={t('email')}>
+        <Input value={email} onChange={e => setEmail(e.target.value)} placeholder={t('emailPlaceholder')} />
       </FormItem>
       <DialogFooter>
-        <Button onClick={() => props.onSend(email)} className="bg-primary-light">发送验证码</Button>
+        <Button onClick={() => props.onSend(email)} className="bg-primary-light">{t('sendCode')}</Button>
       </DialogFooter>
     </>
   )
@@ -68,6 +70,7 @@ const enum STEP {
 }
 
 export default function Email() {
+  const { t } = useTranslation()
   const [step, setStep] = useState(STEP.EMAIL)
 
   function onSend(email: string) {
@@ -80,7 +83,7 @@ export default function Email() {
   }
 
   return (
-    <Dialog title="邮箱登录" open>
+    <Dialog title={t('emailLogin')} open>
       {step === STEP.EMAIL ? <EmailAddress onSend={onSend} /> : <EmailWithCode onSend={onSend} onLogin={onLogin} />}
     </Dialog>
   )

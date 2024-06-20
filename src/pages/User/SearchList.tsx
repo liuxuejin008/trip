@@ -3,14 +3,16 @@ import List from './List'
 import { getMyTravelLinePage, TravelLineStatus } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import type { TravelLineListItem } from '@/services/travel'
+import { useTranslation } from 'react-i18next'
 
 export default function SearchList() {
+  const { t } = useTranslation()
   const [travelList, setTravelList] = useState<TravelLineListItem[]>([])
   const { toast, dismiss } = useToast()
 
   function getList() {
     const { id } = toast({
-      title: '正在加载...',
+      title: t('loading'),
       icon: 'loading'
     })
     getMyTravelLinePage({
@@ -21,7 +23,7 @@ export default function SearchList() {
       .then(res => setTravelList(res.list))
       .catch(e => {
         toast({
-          title: e.message || '加载失败',
+          title: e.message || t('loadingFail'),
           icon: 'error'
         })
       })
@@ -38,6 +40,6 @@ export default function SearchList() {
     getList()
   }, [])
   return (
-    <List data={travelList} getData={getList} title='最近搜索' />
+    <List data={travelList} getData={getList} title={t('recentSearch')} />
   )
 }

@@ -8,6 +8,7 @@ import type { TravelResult } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import type { DateRange } from 'react-day-picker'
 import { saveTravelLine, refreshTravelLine, downloadTravelLine } from '@/services/travel'
+import { useTranslation } from 'react-i18next'
 
 type ActionButtonProps = {
   icon: React.ReactNode
@@ -32,6 +33,7 @@ type ActionsProps = {
   startLoop: () => void
 }
 export default function Actions(props: ActionsProps) {
+  const { t } = useTranslation()
   const { disabled, setDisabled } = props
   const [range, setRange] = useState<DateRange | undefined>({
     from: new Date(props.data?.startTime || new Date()),
@@ -50,7 +52,7 @@ export default function Actions(props: ActionsProps) {
   const { toast, dismiss } = useToast()
   function noop () {
     toast({
-      title: '功能暂未开放，敬请期待',
+      title: t('featWait'),
       icon: 'error'
     })
   }
@@ -58,18 +60,18 @@ export default function Actions(props: ActionsProps) {
   async function onSave () {
     setDisabled(true)
     const { id } = toast({
-      title: '正在保存...',
+      title: t('saving'),
       icon: 'loading'
     })
     try {
       await saveTravelLine(props.data!)
       toast({
-        title: '保存成功',
+        title: t('saveSuccess'),
         icon: 'success'
       })
     } catch (error) {
       toast({
-        title: '保存失败',
+        title: t('saveFail'),
         icon: 'error'
       })
     } finally {
@@ -81,19 +83,19 @@ export default function Actions(props: ActionsProps) {
   async function onRefresh () {
     setDisabled(true)
     const { id } = toast({
-      title: '正在重新生成...',
+      title: t('reGenerating'),
       icon: 'loading'
     })
     try {
       await refreshTravelLine(props.data!.tralineId)
       await props.startLoop()
       toast({
-        title: '重新生成成功',
+        title: t('reGenerateSuccess'),
         icon: 'success'
       })
     } catch (error: any) {
       toast({
-        title: error.message || '重新生成失败',
+        title: error.message || t('reGenerateFail'),
         icon: 'error'
       })
     } finally {
@@ -104,14 +106,14 @@ export default function Actions(props: ActionsProps) {
 
   async function onDownload () {
     const { id } = toast({
-      title: '正在下载...',
+      title: t('downloading'),
       icon: 'loading'
     })
     try {
-      await downloadTravelLine(props.data!.tralineId, `${props.data!.location} ${props.data!.dayNumber} 天行程.pdf`)
+      await downloadTravelLine(props.data!.tralineId, t('downloadFileName', {location: props.data!.location, dayNumber: props.data!.dayNumber}))
     } catch (e: any) {
       toast({
-        title: e.message || '下载失败',
+        title: e.message || t('downloadFail'),
         icon: 'error'
       })
     } finally {
@@ -121,20 +123,20 @@ export default function Actions(props: ActionsProps) {
 
   return (
     <>
-      <div className="mt-[74px] text-dark text-36 font-medium">旅程日期</div>
+      <div className="mt-[74px] text-dark text-36 font-medium">{t('tourDate')}</div>
       <DateRangePicker disabled value={range} onChange={setRange} className="mt-14" />
       <div className="flex justify-center gap-8">
         <ActionButton disabled={disabled} icon={<IconDownload className="w-[46px] h-[38px]" />} onClick={onDownload}>
-          下载行程
+          {t('downloadTour')}
         </ActionButton>
         <ActionButton disabled={disabled} icon={<IconMap className="w-10 h-[42px]" />} onClick={noop}>
-          查看地图
+          {t('seeMap')}
         </ActionButton>
         <ActionButton disabled={disabled} icon={<IconSave className="w-11 h-11" />} onClick={onSave}>
-          保存行程
+          {t('saveTour')}
         </ActionButton>
         <ActionButton disabled={disabled} icon={<IconRefresh className="w-[34px] h-[34px]"/>} onClick={onRefresh}>
-          重新生成
+          {t('reGenerate')}
         </ActionButton>
       </div>
     </>

@@ -1,6 +1,7 @@
 import cs from 'classnames'
 import { useState } from 'react'
 import IconStar from '@/components/Icons/Star'
+import { useTranslation } from 'react-i18next'
 
 type BaseRateProps = {
   className?: string
@@ -26,11 +27,12 @@ export function BaseRate(props: BaseRateProps) {
   )
 }
 export default function Rate() {
+  const { t } = useTranslation()
   const [rate, setRate] = useState<number>(3)
 
   return (
     <div className="flex w-[1146px] h-[87px] bg-primary-light rounded-20 items-center justify-between mt-[84px]">
-      <div className="text-36 text-white ml-[175px]">评价此次行程</div>
+      <div className="text-36 text-white ml-[175px]">{t('rateTour')}</div>
       <BaseRate value={rate} onChange={setRate} className="mr-[134px]" />
     </div>
   )

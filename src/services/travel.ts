@@ -138,8 +138,8 @@ export function deleteTravelLine(id: string) {
 export function downloadTravelLine(id: string, fileName: string) {
   return Axios({
     url: `/api/v1/traline/exportPdf/${id}`,
-    method: "GET",
-    responseType: "blob",
+    method: 'GET',
+    responseType: 'blob',
     headers: {
       Authorization: getToken()
     }
