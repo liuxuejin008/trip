@@ -41,7 +41,7 @@ function Card(props: CardProps) {
   return (
     <div className="w-[1146px] box-border h-[470px] bg-dark-light-78 rounded-[43px] pt-20 px-[210px] mt-40">
       <div className="flex items-center justify-center flex-col">
-        <div className="text-36 text-white truncate">{data?.title}</div>
+        <div className="text-36 text-white truncate max-w-full" title={data?.title}>{data?.title}</div>
         <div className="w-full text-left mt-[62px] h-36 overflow-hidden line-clamp-5 leading-7 text-20 text-white">{data?.describe}</div>
       </div>
       <div className="flex items-end justify-center gap-[28px] mt-12">
