@@ -13,7 +13,7 @@
   "backToHome": "回到首页",
   "code": "验证码",
   "codePlaceholder": "请输入验证码",
-  "codeSended": "已发送验证码{{count}s",
+  "codeSended": "已发送验证码{{count}}s",
   "contactUs": "联系我们",
   "contentRequired": "请输入内容",
   "contentTip": "那天你想做什么？",
