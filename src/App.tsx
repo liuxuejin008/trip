@@ -3,10 +3,11 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Toaster } from '@/components/Toast/toaster'
 import { Lang } from '@/components/Lang'
 
+const AuthLayout = lazy(() => import('./Layout/AuthLayout'))
 const Home = lazy(() => import('./pages/Home'))
 const Result = lazy(() => import('./pages/Result'))
 const User = lazy(() => import('./pages/User'))
@@ -17,27 +18,33 @@ const Settings = lazy(() => import('./pages/User/Settings'))
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
-  },
-  {
-    path: '/result/:id',
-    element: <Result />
-  },
-  {
-    path: '/user',
-    element: <User />,
+    element: <AuthLayout />,
     children: [
       {
+        path: '/',
+        element: <Home />
+      },
+      {
+        path: '/result/:id',
+        element: <Result />
+      },
+      {
         path: '/user',
-        element: <TravelList />
-      },
-      {
-        path: '/user/search',
-        element: <SearchList />
-      },
-      {
-        path: '/user/settings',
-        element: <Settings />
+        element: <User />,
+        children: [
+          {
+            path: '/user',
+            element: <TravelList />
+          },
+          {
+            path: '/user/search',
+            element: <SearchList />
+          },
+          {
+            path: '/user/settings',
+            element: <Settings />
+          }
+        ]
       }
     ]
   }
@@ -45,11 +52,16 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Suspense>
-      <RouterProvider router={router} />
+    <>
+      <RouterProvider
+        router={router}
+        fallbackElement={<div>Loading...</div>}
+      >
+
+      </RouterProvider>
       <Toaster />
       <Lang />
-    </Suspense>
+    </>
   )
 }
 

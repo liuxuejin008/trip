@@ -2,34 +2,14 @@ import { useState } from 'react'
 import DateRangePicker from '@/components/DateRangePicker'
 import IMAGE_BG from '@/assets/images/home_bg.png'
 import IconGo from '@/components/Icons/Go'
-import PhoneLogin from '../../components/Auth/Phone'
-import { isLogin as _isLogin, setToken } from '@/utils/token'
-import type { Token } from '@/utils/token'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import type { DateRange } from 'react-day-picker'
 import { getFormateDate } from '@/utils/date'
 import { generateTravelLine } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
-import { isBefore } from 'date-fns'
 import { useTranslation } from 'react-i18next'
-
-function setPersistentLocation(data: { location: string, startTime: string, endTime: string }) {
-  localStorage.setItem('location', data.location)
-  localStorage.setItem('startTime', data.startTime)
-  localStorage.setItem('endTime', data.endTime)
-}
-
-function formatDate (time?: string | null) {
-  const dateTime = new Date(time || new Date())
-  return isBefore(dateTime, new Date()) ? new Date() : dateTime
-}
-
-function getPersistentLocation() {
-  const location = localStorage.getItem('location') || ''
-  const startTime = formatDate(localStorage.getItem('startTime'))
-  const endTime = formatDate(localStorage.getItem('endTime'))
-  return { location, startTime, endTime }
-}
+import { setPersistentLocation, getPersistentLocation } from '@/utils/storage'
+import { useAuth } from '@/components/Auth/AuthProvider'
 
 type AddressInputProps = {
   value?: string
@@ -64,11 +44,9 @@ function ProfileButton() {
 }
 
 export default function Home() {
+  const { isLogin, login } = useAuth()
   const { t } = useTranslation()
   const preLocationData = getPersistentLocation()
-  const [searchParams] = useSearchParams()
-  const [open, setOpen] = useState<boolean>(searchParams.get('login') === 'true')
-  const [isLogin, setIsLogin] = useState(_isLogin())
   const [location, setLocation] = useState<string>(preLocationData.location)
   const [range, setRange] = useState<DateRange | undefined>({
     from: preLocationData.startTime,
@@ -76,13 +54,6 @@ export default function Home() {
   })
   const navigate = useNavigate()
   const { toast, dismiss } = useToast()
-
-  function onSuccess(token: Token) {
-    setToken(token)
-    setIsLogin(true)
-    setOpen(false)
-    navigate('/')
-  }
 
   async function onGenerate() {
     const startTime = getFormateDate(range?.from)
@@ -132,10 +103,9 @@ export default function Home() {
           <p className="font-semibold text-36 mt-11">{t('tourDate')}</p>
           <DateRangePicker value={range} onChange={setRange} className="mt-5" />
           {isLogin && <ProfileButton />}
-          {!isLogin && <button onClick={() => setOpen(true)} className="text-18 mt-11 hover:underline cursor-pointer outline-none">{t('loginNow')}</button>}
+          {!isLogin && <button onClick={login} className="text-18 mt-11 hover:underline cursor-pointer outline-none">{t('loginNow')}</button>}
         </div>
       </div>
-      <PhoneLogin open={open} onOpenChange={setOpen} onSuccess={onSuccess} />
     </>
   )
 }
