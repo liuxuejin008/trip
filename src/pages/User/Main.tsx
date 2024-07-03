@@ -4,9 +4,9 @@ import { Suspense } from 'react'
 
 export default function Main() {
   return (
-    <div className='flex'>
+    <div className='flex pt-[100px] bg-dark-light'>
       <Menu />
-      <div className="flex-1 min-w-[760px] box-border bg-dark-light p-7">
+      <div className="flex-1 min-w-[760px] box-border bg-dark-light p-7 pt-0">
         <div className="rounded-3xl bg-white h-full box-border pt-12 pr-14 pl-11">
           <Suspense fallback={<div>Loading...</div>}>
             <Outlet />

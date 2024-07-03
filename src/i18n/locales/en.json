@@ -89,5 +89,8 @@
   "shareTour": "Share Tour",
   "title": "TourTally.AI",
   "tourDate": "Travel Date",
-  "tourTitle": "{{location}} {{dayNumber}} Day Tour"
+  "tourTitle": "{{location}} {{dayNumber}} Day Tour",
+  "home": "Home",
+  "lab": "Lab",
+  "loginOrRegister": "Log"
 }

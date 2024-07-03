@@ -1,8 +1,8 @@
 import { zhCN, enUS } from 'date-fns/locale'
 import { format } from 'date-fns'
-import { i18n, CACHE_KEY } from '@/i18n'
+import { i18n, getLang } from '@/i18n'
 
-window.__localeId__ = localStorage.getItem(CACHE_KEY) === 'en' ? enUS : zhCN
+window.__localeId__ = getLang() === 'en' ? enUS : zhCN
 i18n.on('languageChanged', (lng) => {
   if (lng === 'en') {
     window.__localeId__ = enUS

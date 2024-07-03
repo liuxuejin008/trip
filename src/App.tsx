@@ -1,11 +1,12 @@
 
+import { Suspense } from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
 import { lazy } from 'react'
 import { Toaster } from '@/components/Toast/toaster'
-import { Lang } from '@/components/Lang'
+// import { Lang } from '@/components/Lang'
 
 const AuthLayout = lazy(() => import('./Layout/AuthLayout'))
 const Home = lazy(() => import('./pages/Home'))
@@ -14,6 +15,7 @@ const User = lazy(() => import('./pages/User'))
 const TravelList = lazy(() => import('./pages/User/TravelList'))
 const SearchList = lazy(() => import('./pages/User/SearchList'))
 const Settings = lazy(() => import('./pages/User/Settings'))
+const Detail = lazy(() => import('./pages/Detail'))
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/result/:id',
         element: <Result />
+      },
+      {
+        path: '/detail/:id',
+        element: <Detail />
       },
       {
         path: '/user',
@@ -52,7 +58,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <RouterProvider
         router={router}
         fallbackElement={<div>Loading...</div>}
@@ -60,8 +66,8 @@ function App() {
 
       </RouterProvider>
       <Toaster />
-      <Lang />
-    </>
+      {/* <Lang /> */}
+    </Suspense>
   )
 }
 

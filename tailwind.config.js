@@ -56,7 +56,8 @@ export default {
         button2: '3px 3 2px 0px rgba(0,0,0,0.6)',  
       },
       backgroundImage: {
-        date: 'linear-gradient( 180deg, rgba(58,61,75,0.82) 0%, #1D2A3B 100%)'
+        date: 'linear-gradient( 180deg, rgba(58,61,75,0.82) 0%, #1D2A3B 100%)',
+        button: 'linear-gradient( 335deg, #88FEFD 0%, #4892FA 52%, #BC05E2 100%), rgba(255,255,255,0.3)'
       },
       transitionProperty: {
         'bg': 'background-color',

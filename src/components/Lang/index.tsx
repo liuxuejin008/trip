@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { i18n, languageList, CACHE_KEY } from '@/i18n'
+import { i18n, languageList, setLang as _setLang } from '@/i18n'
 import cs from 'classnames'
 
 export function Lang() {
@@ -7,12 +7,12 @@ export function Lang() {
   const toggleLang = () => {
     const nextLang = lang === 'en' ? 'zh' : 'en'
     i18n.changeLanguage(nextLang)
-    localStorage.setItem(CACHE_KEY, nextLang)
+    _setLang(nextLang)
     setLang(nextLang)
   }
 
   return (
-    <button onClick={toggleLang} className="flex-none transition-all duration-200 m-0 border-none p-0 w-8 h-8 inline-flex items-center justify-center bg-transparent rounded-md cursor-pointer absolute top-2 right-4">
+    <button onClick={toggleLang} className="flex-none transition-all duration-200 m-0 border-none p-0 w-8 h-8 inline-flex items-center justify-center bg-transparent rounded-md cursor-pointer">
       <div className="cursor-pointer transition-all duration-200">
         <div className="cursor-pointer relative w-[1.2em] h-[1.2em]">
           {

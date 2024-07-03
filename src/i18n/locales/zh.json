@@ -89,5 +89,8 @@
   "shareTour": "分享行程",
   "title": "游攻略",
   "tourDate": "旅程日期",
-  "tourTitle": "{{location}} {{dayNumber}} 天 行程"
+  "tourTitle": "{{location}} {{dayNumber}} 天 行程",
+  "home": "首页",
+  "lab": "实验室",
+  "loginOrRegister": "登录/注册"
 }

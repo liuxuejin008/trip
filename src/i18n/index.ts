@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import zh from './locales/zh.json'
 import en from './locales/en.json'
+import Cookie from 'js-cookie'
 
 export const languageList = [
   {
@@ -15,6 +16,12 @@ export const languageList = [
 ] as const
 
 export const CACHE_KEY = 'lang'
+export function getLang() {
+  return Cookie.get(CACHE_KEY) || 'zh'
+}
+export function setLang(lang: string) {
+  Cookie.set(CACHE_KEY, lang)
+}
 
 const resources = {
   en: {
@@ -29,7 +36,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: localStorage.getItem(CACHE_KEY) || 'zh',
+    lng: getLang(),
     fallbackLng: 'zh',
     interpolation: {
       escapeValue: false
