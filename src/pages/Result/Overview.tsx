@@ -1,55 +1,55 @@
-import { useState } from 'react'
-import cs from 'classnames'
+// import { useState } from 'react'
+// import cs from 'classnames'
 import IMAGE_BG from '@/assets/images/result_bg.png'
 
-import IconLocation from '@/components/Icons/Location'
-import IconMoney from '@/components/Icons/Money'
-import IconPiece from '@/components/Icons/Piece'
-import IconWeather from '@/components/Icons/Weather'
+// import IconLocation from '@/components/Icons/Location'
+// import IconMoney from '@/components/Icons/Money'
+// import IconPiece from '@/components/Icons/Piece'
+// import IconWeather from '@/components/Icons/Weather'
 import type { TravelResult } from '@/services/travel'
 import { useTranslation } from 'react-i18next'
 
-const icons = [
-  {
-    Icon: IconLocation,
-    name: 'location',
-    classNames: 'w-[19px] h-[22px]',
-  },
-  {
-    Icon: IconMoney,
-    name: 'money',
-    classNames: 'w-[22px] h-[29px]',
-  },
-  {
-    Icon: IconPiece,
-    name: 'piece',
-    classNames: 'w-[26px] h-[26px]',
-  },
-  {
-    Icon: IconWeather,
-    name: 'weather',
-    classNames: 'w-[30px] h-[26px]',
-  }
-]
+// const icons = [
+//   {
+//     Icon: IconLocation,
+//     name: 'location',
+//     classNames: 'w-[19px] h-[22px]',
+//   },
+//   {
+//     Icon: IconMoney,
+//     name: 'money',
+//     classNames: 'w-[22px] h-[29px]',
+//   },
+//   {
+//     Icon: IconPiece,
+//     name: 'piece',
+//     classNames: 'w-[26px] h-[26px]',
+//   },
+//   {
+//     Icon: IconWeather,
+//     name: 'weather',
+//     classNames: 'w-[30px] h-[26px]',
+//   }
+// ]
 
 type CardProps = {
   data?: TravelResult
 }
 function Card(props: CardProps) {
-  const [current, setCurrent] = useState(icons[0].name)
+  // const [current, setCurrent] = useState(icons[0].name)
   const { data } = props
   return (
-    <div className="w-[1146px] box-border h-[470px] bg-dark-light-78 rounded-[43px] pt-20 px-[210px] mt-40">
+    <div className="w-[1146px] box-border h-[470px] bg-dark-light-78 rounded-[43px] pt-16 px-16 mt-40">
       <div className="flex items-center justify-center flex-col">
-        <div className="text-36 text-white truncate max-w-full" title={data?.title}>{data?.title}</div>
-        <div className="w-full text-left mt-[62px] h-36 overflow-hidden line-clamp-5 leading-7 text-20 text-white">{data?.describe}</div>
+        <div className="text-36 h-28 text-white line-clamp-2 max-w-full" title={data?.title}>{data?.title}</div>
+        <div className="w-full text-left mt-8 overflow-hidden line-clamp-[7] leading-7 text-20 text-white" title={data?.describe}>{data?.describe}</div>
       </div>
-      <div className="flex items-end justify-center gap-[28px] mt-12">
+      {/* <div className="flex items-end justify-center gap-[28px] mt-12">
         {icons.map(item => <div onClick={() => setCurrent(item.name)} className={cs('w-[50px] h-[50px] items-center justify-center flex rounded-full overflow-hidden cursor-pointer', 
           item.name === current ? 'bg-dark' : 'bg-white',
           item.name === current ? 'text-white' : 'text-dark'
         )} key={item.name}><item.Icon className={item.classNames} /></div>)}
-      </div>
+      </div> */}
     </div>
   )
 }

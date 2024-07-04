@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import DateRangePicker from '@/components/DateRangePicker'
 import IconDownload from '@/components/Icons/Download'
-import IconMap from '@/components/Icons/Map'
+// import IconMap from '@/components/Icons/Map'
 import IconRefresh from '@/components/Icons/Refresh'
 import IconSave from '@/components/Icons/Save'
 import type { TravelResult } from '@/services/travel'
@@ -129,9 +129,9 @@ export default function Actions(props: ActionsProps) {
         <ActionButton disabled={disabled} icon={<IconDownload className="w-[46px] h-[38px]" />} onClick={onDownload}>
           {t('downloadTour')}
         </ActionButton>
-        <ActionButton disabled={disabled} icon={<IconMap className="w-10 h-[42px]" />} onClick={noop}>
+        {/* <ActionButton disabled={disabled} icon={<IconMap className="w-10 h-[42px]" />} onClick={noop}>
           {t('seeMap')}
-        </ActionButton>
+        </ActionButton> */}
         <ActionButton disabled={disabled} icon={<IconSave className="w-11 h-11" />} onClick={onSave}>
           {t('saveTour')}
         </ActionButton>

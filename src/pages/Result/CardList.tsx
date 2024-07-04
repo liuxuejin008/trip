@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import IconMinus from '@/components/Icons/Minus'
-import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
+// import { PopoverContent, Popover, PopoverTrigger } from '@/components/Popover'
 import type { TravelResult, TravelLineLineList } from '@/services/travel'
-import { regenerationTravelLineInfo, addTravelLineByTime, rewriteTravelLineInfo } from '@/services/travel'
+import {
+  addTravelLineByTime, 
+  // rewriteTravelLineInfo, regenerationTravelLineInfo
+} from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import { getFormateDate } from '@/utils/date'
 import { add } from 'date-fns'
@@ -28,51 +31,51 @@ function Recommend() {
   )
 }
 
-function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) {
-  return (
-    <button {...props} className="w-[178px] cursor-pointer h-[54px] outline-none shadow-button bg-dark-light rounded-36 flex items-center justify-center text-18 font-light text-white">
-      {props.children}
-    </button>
-  )
-}
+// function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) {
+//   return (
+//     <button {...props} className="w-[178px] cursor-pointer h-[54px] outline-none shadow-button bg-dark-light rounded-36 flex items-center justify-center text-18 font-light text-white">
+//       {props.children}
+//     </button>
+//   )
+// }
 
-type EditButtonProps = {
-  disabled: boolean
-  onRewrite: (content: string) => void
-}
-function EditButton(props: EditButtonProps) {
-  const { t } = useTranslation()
-  const [open, setOpen] = useState(false)
-  const [content, setContent] = useState<string>()
-  const { toast } = useToast()
-  useEffect(function () {
-    if (open) {
-      setContent('')
-    }
-  }, [open])
+// type EditButtonProps = {
+//   disabled: boolean
+//   onRewrite: (content: string) => void
+// }
+// function EditButton(props: EditButtonProps) {
+//   const { t } = useTranslation()
+//   const [open, setOpen] = useState(false)
+//   const [content, setContent] = useState<string>()
+//   const { toast } = useToast()
+//   useEffect(function () {
+//     if (open) {
+//       setContent('')
+//     }
+//   }, [open])
 
-  async function onRewrite() {
-    if (!content) {
-      toast({ title: t('contentRequired'), icon: 'error' })
-      return
-    }
-    props.onRewrite(content)
-    setOpen(false)
-  }
+//   async function onRewrite() {
+//     if (!content) {
+//       toast({ title: t('contentRequired'), icon: 'error' })
+//       return
+//     }
+//     props.onRewrite(content)
+//     setOpen(false)
+//   }
 
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
-        <Button disabled={props.disabled} >{t('edit')}</Button>
-      </PopoverTrigger>
-      <PopoverContent sideOffset={20} className="w-[706px] border-none h-72 bg-dark !rounded-30 p-8 box-border flex flex-col justify-between">
-        <h2 className="text-white text-36 font-semibold">{t('editWithAI')}</h2>
-        <input value={content} onChange={(e) => setContent(e.target.value)} className="w-full h-[60px] outline-none bg-white box-border rounded-18 px-5 text-20 font-semibold text-dark-light placeholder:text-dark-light" placeholder={t('contentTip')} type="text" />
-        <button onClick={onRewrite} className="outline-none w-48 h-[50px] bg-primary-light rounded-lg text-white text-20 flex items-center justify-center self-end font-semibold">{t('generate')}</button>
-      </PopoverContent>
-    </Popover>
-  )
-}
+//   return (
+//     <Popover open={open} onOpenChange={setOpen}>
+//       <PopoverTrigger>
+//         <Button disabled={props.disabled} >{t('edit')}</Button>
+//       </PopoverTrigger>
+//       <PopoverContent sideOffset={20} className="w-[706px] border-none h-72 bg-dark !rounded-30 p-8 box-border flex flex-col justify-between">
+//         <h2 className="text-white text-36 font-semibold">{t('editWithAI')}</h2>
+//         <input value={content} onChange={(e) => setContent(e.target.value)} className="w-full h-[60px] outline-none bg-white box-border rounded-18 px-5 text-20 font-semibold text-dark-light placeholder:text-dark-light" placeholder={t('contentTip')} type="text" />
+//         <button onClick={onRewrite} className="outline-none w-48 h-[50px] bg-primary-light rounded-lg text-white text-20 flex items-center justify-center self-end font-semibold">{t('generate')}</button>
+//       </PopoverContent>
+//     </Popover>
+//   )
+// }
 
 function numberToChinese(num: number) {
   if (i18n.language !== 'zh') return num
@@ -130,28 +133,28 @@ function CardItem(props: CardItemProps) {
     setData({ ...data, dayNumber: list.length, endTime: getDateByIndex(data.startTime, list.length - 1), tralineInfoList: list })
   }
 
-  async function onRegenerate() {
-    if (disabled || !data) return
-    setDisabled(true)
-    const { id } = toast({ title: t('reGenerating'), icon: 'loading' })
-    try {
-      const res = item.tralineInfoId ? await regenerationTravelLineInfo(item.tralineInfoId) : await addTravelLineByTime({ location: data.location, tralineTime: getDateByIndex(data.startTime, index) })
-      setDisabled(false)
-      const list = data.tralineInfoList.map((line, i) => {
-        if (i === index) {
-          return res
-        }
-        return line
-      })
-      setData({ ...data, tralineInfoList: list })
-    } catch (e: any) {
-      toast({ title: e.message || t('reGenerateFail'), icon: 'error' })
-      setDisabled(false)
-    } finally {
-      setDisabled(false)
-      dismiss(id)
-    }
-  }
+  // async function onRegenerate() {
+  //   if (disabled || !data) return
+  //   setDisabled(true)
+  //   const { id } = toast({ title: t('reGenerating'), icon: 'loading' })
+  //   try {
+  //     const res = item.tralineInfoId ? await regenerationTravelLineInfo(item.tralineInfoId) : await addTravelLineByTime({ location: data.location, tralineTime: getDateByIndex(data.startTime, index) })
+  //     setDisabled(false)
+  //     const list = data.tralineInfoList.map((line, i) => {
+  //       if (i === index) {
+  //         return res
+  //       }
+  //       return line
+  //     })
+  //     setData({ ...data, tralineInfoList: list })
+  //   } catch (e: any) {
+  //     toast({ title: e.message || t('reGenerateFail'), icon: 'error' })
+  //     setDisabled(false)
+  //   } finally {
+  //     setDisabled(false)
+  //     dismiss(id)
+  //   }
+  // }
 
   async function addDate() {
     if (disabled || !data) return
@@ -169,42 +172,42 @@ function CardItem(props: CardItemProps) {
     }
   }
 
-  async function onRewrite(content: string) {
-    if (disabled || !data) return
-    setDisabled(true)
-    const { id } = toast({ title: t('editing'), icon: 'loading' })
-    try {
-      const res = await rewriteTravelLineInfo({
-        beforeContent: item.content,
-        location: data.location,
-        suggest: content,
-        tralineTime: getDateByIndex(data.startTime, index)
-      })
-      const list = data.tralineInfoList.map((line, i) => {
-        if (i === index) {
-          return res
-        }
-        return line
-      })
-      setData({ ...data, tralineInfoList: list })
-    } catch (e: any) {
-      toast({ title: e.message || t('editFail'), icon: 'error' })
-    } finally {
-      setDisabled(false)
-      dismiss(id)
-    }
-  }
+  // async function onRewrite(content: string) {
+  //   if (disabled || !data) return
+  //   setDisabled(true)
+  //   const { id } = toast({ title: t('editing'), icon: 'loading' })
+  //   try {
+  //     const res = await rewriteTravelLineInfo({
+  //       beforeContent: item.content,
+  //       location: data.location,
+  //       suggest: content,
+  //       tralineTime: getDateByIndex(data.startTime, index)
+  //     })
+  //     const list = data.tralineInfoList.map((line, i) => {
+  //       if (i === index) {
+  //         return res
+  //       }
+  //       return line
+  //     })
+  //     setData({ ...data, tralineInfoList: list })
+  //   } catch (e: any) {
+  //     toast({ title: e.message || t('editFail'), icon: 'error' })
+  //   } finally {
+  //     setDisabled(false)
+  //     dismiss(id)
+  //   }
+  // }
 
-  function onEdit() {
-    setIsEdit(true)
-    setTimeout(() => {
-      const range = document.createRange()
-      range.selectNodeContents($content.current!)
-      const sel = window.getSelection()
-      sel!.removeAllRanges()
-      sel!.addRange(range)
-    }, 0)
-  }
+  // function onEdit() {
+  //   setIsEdit(true)
+  //   setTimeout(() => {
+  //     const range = document.createRange()
+  //     range.selectNodeContents($content.current!)
+  //     const sel = window.getSelection()
+  //     sel!.removeAllRanges()
+  //     sel!.addRange(range)
+  //   }, 0)
+  // }
 
   function onSave () {
     if (!data) return
@@ -245,11 +248,11 @@ function CardItem(props: CardItemProps) {
           <div className="font-medium text-24">{item.title}</div>
           <div className="text-18 font-light">{item.subTitle}</div>
         </div>
-        <div className="flex items-end gap-5">
+        {/* <div className="flex items-end gap-5">
           {false && <EditButton disabled={disabled} onRewrite={onRewrite} />}
           <Button disabled={disabled} onClick={onEdit}>{t('edit')}</Button>
           <Button disabled={disabled} onClick={onRegenerate}>{t('reGenerate')}</Button>
-        </div>
+        </div> */}
       </div>
       <div ref={$content} contentEditable={isEdit} onBlur={onSave} dangerouslySetInnerHTML={{ __html: normalizeContent(item.content) }} className="h-[398px] mt-12 overflow-y-auto box-border p-11 rounded-lg text-18 text-dark bg-white">
       </div>
