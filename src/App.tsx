@@ -15,7 +15,6 @@ const User = lazy(() => import('./pages/User'))
 const TravelList = lazy(() => import('./pages/User/TravelList'))
 const SearchList = lazy(() => import('./pages/User/SearchList'))
 const Settings = lazy(() => import('./pages/User/Settings'))
-const Detail = lazy(() => import('./pages/Detail'))
 
 const router = createBrowserRouter([
   {
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
       {
         path: '/result/:id',
         element: <Result />
-      },
-      {
-        path: '/detail/:id',
-        element: <Detail />
       },
       {
         path: '/user',
