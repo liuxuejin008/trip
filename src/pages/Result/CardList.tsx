@@ -11,6 +11,7 @@ import { getFormateDate } from '@/utils/date'
 import { add } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { i18n } from '@/i18n'
+import { marked } from 'marked'
 
 function Recommend() {
   const { t } = useTranslation()
@@ -101,7 +102,8 @@ function numberToChinese(num: number) {
 }
 
 function normalizeContent(content: string) {
-  return content.replace(/\n/g, '<br/>')
+  return marked(content)
+  // return content.replace(/\n/g, '<br/>')
 }
 
 function getDateByIndex(startTime: string, index: number) {

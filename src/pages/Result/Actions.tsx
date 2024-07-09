@@ -50,12 +50,12 @@ export default function Actions(props: ActionsProps) {
   }, [props.data?.startTime, props.data?.endTime])
 
   const { toast, dismiss } = useToast()
-  function noop () {
-    toast({
-      title: t('featWait'),
-      icon: 'error'
-    })
-  }
+  // function noop () {
+  //   toast({
+  //     title: t('featWait'),
+  //     icon: 'error'
+  //   })
+  // }
 
   async function onSave () {
     setDisabled(true)
