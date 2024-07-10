@@ -54,8 +54,8 @@ declare module 'axios' {
 }
 
 
-axios.interceptors.request.use((config) => {
-  config.headers.Authorization = getToken()
+axios.interceptors.request.use(async (config) => {
+  config.headers.Authorization = await getToken()
   return config
 })
 

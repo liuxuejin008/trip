@@ -1,22 +1,8 @@
-import { createContext, useContext } from 'react'
 import { isLogin as _isLogin, setToken, type Token } from '@/utils/token'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import PhoneLogin from '@/components/Auth/Phone'
-
-export type AuthContextState = {
-  isLogin: boolean
-  login: () => void
-}
-const AuthContext = createContext<AuthContextState>({
-  isLogin: _isLogin(),
-  login: () => {}
-})
-
-
-export function useAuth () {
-  return useContext(AuthContext)
-}
+import { AuthContext } from './context'
 
 export function AuthProvider({
   children

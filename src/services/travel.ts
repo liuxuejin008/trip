@@ -135,13 +135,13 @@ export function deleteTravelLine(id: string) {
 }
 
 
-export function downloadTravelLine(id: string, fileName: string) {
+export async function downloadTravelLine(id: string, fileName: string) {
   return Axios({
     url: `/api/v1/traline/exportPdf/${id}`,
     method: 'GET',
     responseType: 'blob',
     headers: {
-      Authorization: getToken()
+      Authorization: await getToken()
     }
   }).then((response) => {
     downloadFile(response, fileName)

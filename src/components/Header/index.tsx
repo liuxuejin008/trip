@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Lang } from '../Lang'
 import { useLocation } from 'react-router-dom'
-import { useAuth } from '@/components/Auth/AuthProvider'
+import { useAuth } from '@/components/Auth/context'
 import IMAGE_LOGO from '@/assets/images/logo.png'
 
 export function Header() {

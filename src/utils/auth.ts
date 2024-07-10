@@ -1,0 +1,1 @@
+export const isAuth0 = import.meta.env.VITE_AUTH_TYPE === 'auth0'

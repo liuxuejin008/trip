@@ -9,7 +9,7 @@ import { generateTravelLine } from '@/services/travel'
 import { useToast } from '@/components/Toast/use-toast'
 import { useTranslation } from 'react-i18next'
 import { setPersistentLocation, getPersistentLocation } from '@/utils/storage'
-import { useAuth } from '@/components/Auth/AuthProvider'
+import { useAuth } from '@/components/Auth/context'
 
 type AddressInputProps = {
   value?: string
