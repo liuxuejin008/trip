@@ -6,11 +6,11 @@ import Cookie from 'js-cookie'
 
 export const languageList = [
   {
-    label: 'EN',
+    label: 'English',
     value: 'en'
   },
   {
-    label: '中',
+    label: '中文简体',
     value: 'zh'
   }
 ] as const
