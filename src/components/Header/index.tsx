@@ -3,6 +3,8 @@ import { Lang } from '../Lang'
 import { useLocation } from 'react-router-dom'
 import { useAuth } from '@/components/Auth/context'
 import IMAGE_LOGO from '@/assets/images/logo.png'
+import cs from 'classnames'
+import { UserDropdown } from '../UserDropdown'
 
 export function Header() {
   const { t } = useTranslation()
@@ -21,11 +23,11 @@ export function Header() {
           <a href="/">
             <img src={IMAGE_LOGO} className="h-10" alt="logo" />
           </a>
-          <nav className="flex items-center text-white text-16 font-semibold hover:opacity-80 gap-7">
-            <a className={location.pathname === '/' ? activeClassName : ''} href="/">{t('home')}</a>
-            <a href="/">{t('lab')}</a>
-            <a href='/'>{t('contactUs')}</a>
-            {!isLogin && <a className="cursor-pointer" onClick={onLogin}>{t('loginOrRegister')}</a>}
+          <nav className="flex items-center text-white text-16 font-semibold gap-7">
+            <a className={cs('uppercase hover:opacity-80', location.pathname === '/' ? activeClassName : '')} href="/">{t('home')}</a>
+            <a className="uppercase hover:opacity-80" href='/'>{t('contactUs')}</a>
+            {!isLogin && <a className="uppercase cursor-pointer hover:opacity-80" onClick={onLogin}>{t('loginOrRegister')}</a>}
+            <UserDropdown />
             <Lang />
           </nav>
         </div>

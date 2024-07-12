@@ -14,8 +14,8 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://tourtally.ai',
-        // target: 'http://192.168.14.122:8080',
+        // target: 'https://tourtally.ai',
+        target: 'http://192.168.14.122:8080',
         changeOrigin: true
       }
     }

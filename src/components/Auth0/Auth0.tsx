@@ -1,8 +1,10 @@
-import { useEffect } from 'react'
-import { useAuth0, type GetTokenSilentlyOptions, type RedirectLoginOptions, type AppState, type LogoutOptions } from '@auth0/auth0-react'
+import { useEffect, useState } from 'react'
+import { useAuth0, type GetTokenSilentlyOptions, type RedirectLoginOptions, type AppState, type LogoutOptions, type User } from '@auth0/auth0-react'
 import { AuthContext } from '../Auth/context'
 import { refreshUser } from '@/services/user'
 import { Loading } from '../Loading2'
+import { useToast } from '@/components/Toast/use-toast'
+import { useTranslation } from 'react-i18next'
 
 type Auth0Instance = ReturnType<typeof useAuth0>
 let auth0Instance: Auth0Instance
@@ -38,7 +40,10 @@ export const getUserInfo = function () {
 }
 
 export function Auth0({ children }: { children: React.ReactNode }) {
+  const { toast } = useToast()
+  const { t } = useTranslation()
   const auth0 = useAuth0()
+  const [user, setUser] = useState<User>()
   const { isAuthenticated: isLogin, isLoading, error, loginWithRedirect: login } = auth0
   useEffect(function () {
     if (!auth0Instance) {
@@ -47,9 +52,28 @@ export function Auth0({ children }: { children: React.ReactNode }) {
     auth0Instance = auth0
   }, [auth0])
 
+  function getUser () {
+    return getUserInfo().then(setUser)
+  }
+
+  async function logout () {
+    try {
+      await auth0.logout()
+      toast({
+        title: t('logoutSuccess'),
+      })
+    } catch (e: any) {
+      toast({
+        title: e.message,
+        icon: 'error'
+      })
+    }
+  }
+
   useEffect(function () {
     if (isLogin) {
       refreshUser()
+      getUser()
     }
   }, [isLogin])
 
@@ -60,12 +84,16 @@ export function Auth0({ children }: { children: React.ReactNode }) {
   if (error) {
     return <div>Oops... {error.message}</div>
   }
+  
 
   return (
     <AuthContext.Provider
       value={{
         isLogin,
-        login
+        login,
+        user,
+        getUser,
+        logout
       }}
     >
       {children}

@@ -91,7 +91,7 @@ const DropdownMenuItem = React.forwardRef<
     className={cn(
       'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       inset && 'pl-8',
-      '!text-[#6C6C6C] text-center cursor-pointer w-full !px-0 justify-center !text-sm !h-5 !items-center hover:!text-white hover:!bg-[#F7B62D] transition-all',
+      'text-[#6C6C6C] text-center cursor-pointer w-full !px-0 justify-center !text-sm !h-5 !items-center hover:text-white hover:bg-[#F7B62D] transition-all',
       className
     )}
     {...props}

@@ -1,14 +1,11 @@
 import cs from 'classnames'
-import { useState, useEffect } from 'react'
-import { getUserInfo } from '@/services/user'
+import { useState } from 'react'
 import type { UserInfo } from '@/services/user'
 import SettingDialog from '@/components/Auth/Setting'
-import { removeToken } from '@/utils/token'
-import { useToast } from '@/components/Toast/use-toast'
 import { useTranslation } from 'react-i18next'
 import { isAuth0 } from '@/utils/auth'
-import { getUserInfo as getAuth0UserInfo, logout as auth0Logout } from '@/components/Auth0/Auth0'
 import { type User } from '@auth0/auth0-react'
+import { useAuth } from '@/components/Auth/context'
 
 type ButtonProps = {
   className?: string
@@ -39,39 +36,15 @@ function ListItem (props: ListItemProps) {
   )
 }
 
-function getUser () {
-  if (isAuth0) {
-    return getAuth0UserInfo()
-  }
-  return getUserInfo()
-}
-
 export default function Settings() {
   const { t } = useTranslation()
-  const [userInfo, setUserInfo] = useState<UserInfo | User>()
+  const { user, getUser, logout } = useAuth()
+  const [userInfo, setUserInfo] = useState(user)
   const [open, setOpen] = useState(false)
-  const { toast } = useToast()
-
-  useEffect(function () {
-    getUser().then(setUserInfo)
-  }, [])
 
   function onSuccess(userInfo: UserInfo) {
     setUserInfo(userInfo)
-  }
-
-  function onLogout() {
-    if (isAuth0) {
-      auth0Logout()
-    }
-    removeToken()
-    toast({
-      title: t('logoutSuccess'),
-    })
-
-    setTimeout(function () {
-      window.location.href = '/'
-    }, 500)
+    getUser()
   }
 
   const nickname = isAuth0 ? (userInfo as User)?.nickname : ((userInfo as UserInfo)?.nickName || (userInfo as UserInfo)?.phoneNumber)
@@ -84,7 +57,7 @@ export default function Settings() {
         <div className='flex gap-9'>
           {!isAuth0 && <Button onClick={() => setOpen(true)} className="bg-dark-light">{t('editNickname')}</Button>}
           {/* <Button className="bg-dark-light">修改密码</Button> */}
-          <Button onClick={onLogout} className="bg-error">{t('logout')}</Button>
+          <Button onClick={logout} className="bg-error">{t('logout')}</Button>
         </div>
       </div>
       <div className="mt-9">

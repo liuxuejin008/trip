@@ -1,14 +1,21 @@
 import { isLogin as _isLogin, setToken, type Token } from '@/utils/token'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import PhoneLogin from '@/components/Auth/Phone'
 import { AuthContext } from './context'
+import { type UserInfo, getUserInfo } from '@/services/user'
+import { removeToken } from '@/utils/token'
+import { useToast } from '@/components/Toast/use-toast'
+import { useTranslation } from 'react-i18next'
 
 export function AuthProvider({
   children
 }: {
   children: React.ReactNode
 }) {
+  const { toast } = useToast()
+  const { t } = useTranslation()
+  const [userInfo, setUserInfo] = useState<UserInfo>()
   const [searchParams] = useSearchParams()
   const [open, setOpen] = useState<boolean>(searchParams.get('login') === 'true')
   const navigate = useNavigate()
@@ -25,11 +32,35 @@ export function AuthProvider({
     navigate('/')
   }
 
+  function getUser () {
+    return getUserInfo().then(setUserInfo)
+  }
+
+  function logout() {
+    removeToken()
+    toast({
+      title: t('logoutSuccess'),
+    })
+
+    setTimeout(function () {
+      window.location.href = '/'
+    }, 500)
+  }
+
+  useEffect(function () {
+    if (isLogin) {
+      getUser()
+    }
+  }, [isLogin])
+  
   return (
     <AuthContext.Provider
       value={{
         isLogin,
-        login
+        user: userInfo,
+        getUser,
+        login,
+        logout
       }}
     >
       {children}

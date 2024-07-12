@@ -14,7 +14,7 @@
   "code": "Code",
   "codePlaceholder": "Please enter the verification code",
   "codeSended": "Verification code sent {{count}}s",
-  "contactUs": "Contact Us",
+  "contactUs": "Contact",
   "contentRequired": "Please enter content",
   "contentTip": "What do you want to do that day?",
   "copySuccess": "Link copied",
@@ -54,7 +54,7 @@
   "loginNow": "Login Now",
   "loginSuccess": "Login successful",
   "logining": "Logging in...",
-  "logout": "Logout",
+  "logout": "Log Out",
   "logoutSuccess": "Logout successful",
   "nickNameRequired": "Nickname cannot be empty",
   "nickname": "Nickname",
@@ -90,7 +90,7 @@
   "title": "TourTally.AI",
   "tourDate": "Travel Date",
   "tourTitle": "{{location}} {{dayNumber}} Day Tour",
-  "home": "Home",
+  "home": "FINDER",
   "lab": "Lab",
-  "loginOrRegister": "Log"
+  "loginOrRegister": "SIGN IN/UP"
 }
