@@ -7,7 +7,7 @@ export type AuthContextState = {
 }
 export const AuthContext = createContext<AuthContextState>({
   isLogin: false,
-  login: () => {}
+  login: () => {},
 })
 
 

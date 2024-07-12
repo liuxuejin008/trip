@@ -32,3 +32,7 @@ export type UpdateUserInfo = Pick<UserInfo, 'nickName' | 'id'>
 export function updateUserInfo(userInfo: UpdateUserInfo) {
   return axios.post('/v1/user/update', userInfo)
 }
+
+export function refreshUser () {
+  return axios.get('/auth/refresh-user')
+}

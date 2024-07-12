@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useAuth0, type GetTokenSilentlyOptions, type RedirectLoginOptions, type AppState, type LogoutOptions } from '@auth0/auth0-react'
-import './index.css'
 import { AuthContext } from '../Auth/context'
+import { refreshUser } from '@/services/user'
+import { Loading } from '../Loading2'
 
 type Auth0Instance = ReturnType<typeof useAuth0>
 let auth0Instance: Auth0Instance
@@ -14,8 +15,11 @@ const readyPromise = new Promise<boolean>(function (_resolve) {
 export const getAccessToken = function (options?: GetTokenSilentlyOptions) {
   return readyPromise.then(function () {
     return auth0Instance.getAccessTokenSilently(options)
+  }).then(function (token) {
+    return `Bearer ${token}`
   })
 }
+
 export const loginWithRedirect = function (options?: RedirectLoginOptions<AppState>) {
   return readyPromise.then(function () {
     return auth0Instance.loginWithRedirect(options)
@@ -43,15 +47,14 @@ export function Auth0({ children }: { children: React.ReactNode }) {
     auth0Instance = auth0
   }, [auth0])
 
-
+  useEffect(function () {
+    if (isLogin) {
+      refreshUser()
+    }
+  }, [isLogin])
 
   if (isLoading) {
-    return (
-      <div className='absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center justify-center gap-8'>
-        <div className='max-h-[10px]'><div className='loading' /></div>
-        <div>Loading...</div>
-      </div>
-    )
+    return <Loading />
   }
 
   if (error) {

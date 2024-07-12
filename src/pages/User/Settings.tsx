@@ -75,10 +75,11 @@ export default function Settings() {
   }
 
   const nickname = isAuth0 ? (userInfo as User)?.nickname : ((userInfo as UserInfo)?.nickName || (userInfo as UserInfo)?.phoneNumber)
-
+  const email = isAuth0 && (userInfo as User)?.email
   return (
     <>
       <div className="text-24">{t('nickname')}:<span className="ml-6">{nickname}</span></div>
+      {email && <div className="text-24">{t('email')}:<span className="ml-6">{email}</span></div>}
       <div className="mt-9">
         <div className='flex gap-9'>
           {!isAuth0 && <Button onClick={() => setOpen(true)} className="bg-dark-light">{t('editNickname')}</Button>}

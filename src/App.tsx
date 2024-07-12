@@ -7,6 +7,7 @@ import {
 import { lazy } from 'react'
 import { Toaster } from '@/components/Toast/toaster'
 // import { Lang } from '@/components/Lang'
+import { Loading } from '@/components/Loading2'
 
 const AuthLayout = lazy(() => import('./Layout/AuthLayout'))
 const Home = lazy(() => import('./pages/Home'))
@@ -53,10 +54,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <RouterProvider
         router={router}
-        fallbackElement={<div>Loading...</div>}
       >
 
       </RouterProvider>
