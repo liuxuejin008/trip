@@ -18,7 +18,7 @@ export function Header() {
 
   return (
     <>
-      <header className="absolute flex justify-center top-0 w-screen z-50">
+      <header id="header" className="absolute flex justify-center top-0 w-screen z-50">
         <div className="flex justify-between w-[937px] h-[76px] items-center">
           <a href="/">
             <img src={IMAGE_LOGO} className="h-10" alt="logo" />
