@@ -17,7 +17,6 @@ export const AuthContext = createContext<AuthContextState>({
   logout: () => {}
 })
 
-
 export function useAuth () {
   return useContext(AuthContext)
 }

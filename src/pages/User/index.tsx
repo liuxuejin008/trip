@@ -8,12 +8,12 @@ export default function User() {
     const headerWrapper = document.querySelector('#header>div')
     if (headerWrapper) {
       headerWrapper.classList.add('!w-full')
-      headerWrapper.classList.add('!px-7')
+      headerWrapper.classList.add('!px-12')
     }
     return function () {
       if (headerWrapper) {
         headerWrapper.classList.remove('!w-full')
-        headerWrapper.classList.remove('!px-7')
+        headerWrapper.classList.remove('!px-12')
       }
     }
   }, [])

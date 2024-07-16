@@ -11,12 +11,15 @@ import { type User } from '@auth0/auth0-react'
 import { type UserInfo } from '@/services/user'
 import { useTranslation } from 'react-i18next'
 import { firstUpperCaseLetter } from '@/utils/str'
+import { useNavigate } from 'react-router-dom'
+
 
 export function UserDropdown() {
   const { isLogin, user, logout } = useAuth()
   const { t } = useTranslation()
   const [isLoaded, setIsLoaded] = useState(false)
-  
+  const navigate = useNavigate()
+
   const avatar = (user as User)?.picture
   const nickname = (user as User)?.nickname || ((user as UserInfo)?.nickName || (user as UserInfo)?.phoneNumber)
   
@@ -32,6 +35,12 @@ export function UserDropdown() {
   }, [avatar])
   
   if (!user || !isLogin) return null
+
+  function jump () {
+    setTimeout(function () {
+      navigate('/user/settings')
+    })
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="!outline-none">
@@ -41,7 +50,8 @@ export function UserDropdown() {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent sideOffset={10} className="px-2.5 !py-2.5 !pt-5 w-[141px]">
-        <DropdownMenuItem className="hover:!bg-white hover:!text-[#6C6C6C] !text-align-left">{nickname}</DropdownMenuItem>
+        <DropdownMenuItem onClick={jump}>{nickname}</DropdownMenuItem>
+        <DropdownMenuItem onClick={jump}>{t('accountCenter')}</DropdownMenuItem>
         <DropdownMenuSeparator className="bg-[#C2C2C2] w-full" />
         <DropdownMenuItem onClick={logout} className="hover:!bg-white hover:!text-[#6C6C6C]">
           <div className="text-[#FC4F4F] hover:opacity-80 text-sm">{t('logout')}</div>
