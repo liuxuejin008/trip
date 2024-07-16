@@ -26,8 +26,8 @@ export function Header() {
           <nav className="flex items-center text-white text-16 font-semibold gap-7">
             <a className={cs('uppercase hover:opacity-80', location.pathname === '/' ? activeClassName : '')} href="/">{t('home')}</a>
             <a className="uppercase hover:opacity-80" href='/'>{t('contactUs')}</a>
-            {!isLogin && <a className="uppercase cursor-pointer hover:opacity-80" onClick={onLogin}>{t('loginOrRegister')}</a>}
             <Lang />
+            {!isLogin && <a className="uppercase cursor-pointer hover:opacity-80" onClick={onLogin}>{t('loginOrRegister')}</a>}
             <UserDropdown />
           </nav>
         </div>
