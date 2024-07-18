@@ -50,3 +50,13 @@ jobs:
           key: ${{ secrets.KEY }}
           source: './dist/'
           target: /root/trip
+
+      - name: Copy files to another server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST2 }}
+          username: ${{ secrets.HOST2_USER_NAME }}
+          port: ${{ secrets.PORT }}
+          password: ${{ secrets.HOST2_PASSWORD }}
+          source: './dist/'
+          target: /root/trip
