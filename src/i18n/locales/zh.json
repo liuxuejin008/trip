@@ -92,5 +92,6 @@
   "tourTitle": "{{location}} {{dayNumber}} 天 行程",
   "home": "首页",
   "lab": "实验室",
-  "loginOrRegister": "登录/注册"
+  "loginOrRegister": "登录/注册",
+  "discover": "发现"
 }

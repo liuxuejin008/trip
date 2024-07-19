@@ -92,5 +92,6 @@
   "tourTitle": "{{location}} {{dayNumber}} Day Tour",
   "home": "HOME",
   "lab": "Lab",
-  "loginOrRegister": "SIGN IN/UP"
+  "loginOrRegister": "SIGN IN/UP",
+  "discover": "DISCOVER"
 }
