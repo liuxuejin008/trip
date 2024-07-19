@@ -90,7 +90,7 @@
   "title": "TourTally.AI",
   "tourDate": "Travel Date",
   "tourTitle": "{{location}} {{dayNumber}} Day Tour",
-  "home": "FINDER",
+  "home": "HOME",
   "lab": "Lab",
   "loginOrRegister": "SIGN IN/UP"
 }
