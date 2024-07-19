@@ -1,6 +1,8 @@
 import Axios from 'axios'
 import { getToken, removeToken } from '@/utils/token'
 import { toast } from '@/components/Toast/use-toast'
+import { isAuth0 } from '@/utils/auth'
+import { loginWithRedirect } from '@/components/Auth0/Auth0'
 
 export const axios = Axios.create({
   baseURL: '/api',
@@ -82,7 +84,11 @@ axios.interceptors.response.use((response) => {
     } else {
       redirecting = true
       setTimeout(() => {
-        window.location.href = '/?login=true'
+        if (isAuth0) {
+          loginWithRedirect()
+        } else {
+          window.location.href = '/?login=true'
+        }
       }, 500)
       return Promise.reject(error)
     }

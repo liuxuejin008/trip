@@ -75,10 +75,16 @@ export default function Home() {
 
     setPersistentLocation({ location, startTime, endTime })
 
+    if (!isLogin) {
+      login()
+      return
+    }
+
     const { id } = toast({
       title: t('generating'),
       icon: 'loading'
     })
+
 
     try {
       const { tralineId } = await generateTravelLine({ location, startTime, endTime })
