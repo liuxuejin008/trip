@@ -127,7 +127,7 @@ function CardItem(props: CardItemProps) {
   const { toast, dismiss } = useToast()
   const $content = useRef<HTMLDivElement>(null)
   // 是否可以删除，如果不止一天，则可以删除
-  const isShowMinus = index !== 0 || data && data.tralineInfoList?.length > 1
+  // const isShowMinus = index !== 0 || data && data.tralineInfoList?.length > 1
 
   function onDelete() {
     if (disabled || !data) return
@@ -260,7 +260,7 @@ function CardItem(props: CardItemProps) {
       </div>
       {false && <Recommend />}
       {false && <button onClick={addDate} disabled={disabled} className="absolute bottom-0 right-0 translate-x-full -mr-8 w-[232px] h-[71px] bg-warn-light rounded-36 flex items-center justify-center shadow-date text-18 text-dark font-light">{t('addDate')}</button>}
-      {isShowMinus && <IconMinus onClick={onDelete} className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />}
+      {false && <IconMinus onClick={onDelete} className="absolute top-6 right-6 w-[37px] h-[37px] bg-error-close text-white rounded-full cursor-pointer" />}
     </div>
   )
 }
