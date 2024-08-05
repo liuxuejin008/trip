@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Lang } from '../Lang'
 import { useLocation } from 'react-router-dom'
 import { useAuth } from '@/components/Auth/context'
-import IMAGE_LOGO from '@/assets/images/logo.png'
+// import IMAGE_LOGO from '@/assets/images/logo.png'
 import cs from 'classnames'
 import { UserDropdown } from '../UserDropdown'
 
@@ -16,12 +16,13 @@ export function Header() {
     login()
   }
 
+
   return (
     <>
       <header id="header" className="absolute flex justify-center top-0 w-screen z-50">
         <div className="flex justify-between w-[937px] h-[76px] items-center">
           <a href="/">
-            <img src={IMAGE_LOGO} className="h-10" alt="logo" />
+            <img src="/logo.png" className="h-10" alt="logo" />
           </a>
           <nav className="flex items-center text-white text-16 font-semibold gap-7">
             <a className={cs('uppercase hover:opacity-80', location.pathname === '/' ? activeClassName : '')} href="/">{t('home')}</a>
