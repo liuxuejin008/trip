@@ -17,7 +17,7 @@ export const languageList = [
 
 export const CACHE_KEY = 'lang'
 export function getLang() {
-  return Cookie.get(CACHE_KEY) || 'zh'
+  return Cookie.get(CACHE_KEY) || 'en'
 }
 export function setLang(lang: string) {
   Cookie.set(CACHE_KEY, lang)
