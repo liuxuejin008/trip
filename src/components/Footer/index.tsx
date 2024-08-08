@@ -27,7 +27,7 @@ export function Footer() {
       list: [
         {
           title: 'woy',
-          href: 'https://woy.ai/'
+          href: 'https://woy.ai/',
         },
         {
           title: 'AI生成文字图片',
@@ -52,7 +52,7 @@ export function Footer() {
       list: [
         {
           title: 'woy',
-          href: 'https://woy.ai/'
+          href: 'https://woy.ai/',
         },
         {
           title: 'AI生成文字图片',
