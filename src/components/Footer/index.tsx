@@ -133,7 +133,7 @@ export function Footer() {
           {links.map(item => <Link key={item.title} list={item.list} title={item.title} />)}
         </div>
       </div>
-      <div>© 2024 All right reserved by Tourtally</div>
+      <div className="text-[#999990] text-16">© 2024 All right reserved by Tourtally</div>
       {/* <div className="mt-[140px] text-center">
         <div className="text-primary-light text-48 font-medium">{t('title')}</div>
         <div className="text-32 text-white mt-9">{t('description')}</div>
