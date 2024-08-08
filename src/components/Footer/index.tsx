@@ -51,8 +51,8 @@ export function Footer() {
       title: 'AI 工具',
       list: [
         {
-          title: 'AI在线抠图',
-          href: '#'
+          title: 'woy',
+          href: 'https://woy.ai/'
         },
         {
           title: 'AI生成文字图片',
