@@ -26,7 +26,7 @@ export function Footer() {
       title: 'AI 工具链',
       list: [
         {
-          title: 'woy',
+          title: 'Woy AI Tools',
           href: 'https://woy.ai/',
         },
         {
