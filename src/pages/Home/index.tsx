@@ -101,7 +101,7 @@ export default function Home() {
 
   return (
     <>
-      <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative min-w-screen min-h-screen bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 after:bg-dark-77">
+      <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative min-w-[max(100vw,960px)] min-h-[max(100vh,800px)] bg-cover bg-center flex flex-col justify-center items-center before:flex-1 bg-dark after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 after:bg-dark-77">
         <div className="flex-[2] min-h-[640px] flex flex-col flex-shrink-0 items-center justify-center text-white z-10">
           <h1 className="font-semibold text-48">{t('title')}</h1>
           <p className="font-semibold text-24 mt-5">{t('description')}</p>

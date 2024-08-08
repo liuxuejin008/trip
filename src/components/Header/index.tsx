@@ -19,7 +19,7 @@ export function Header() {
 
   return (
     <>
-      <header id="header" className="absolute flex justify-center top-0 w-screen z-50">
+      <header id="header" className="absolute flex justify-center min-w-[max(100vw,1024px)] top-0 left-0 z-50">
         <div className="flex justify-between w-[937px] h-[76px] items-center">
           <a href="/">
             <img src="/logo.png" className="h-10" alt="logo" />

@@ -61,7 +61,7 @@ export default function Overview(props: OverViewProps) {
   const { data } = props
   const { t } = useTranslation()
   return (
-    <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative bg-cover h-[1108px] before:absolute before:left-0 before:top-0 before:right-0 before:bottom-0 before:bg-dark-77">
+    <div style={{ backgroundImage: `url(${IMAGE_BG})` }} className="relative bg-cover min-w-[max(100vw,1200px)] h-[1108px] before:absolute before:left-0 before:top-0 before:right-0 before:bottom-0 before:bg-dark-77">
       <div className="relative flex flex-col items-center pt-[34px] z-10">
         <div className="text-primary-light text-32 font-medium">{t('title')}</div>
         <div className="text-primary-dark text-28">{t('description')}</div>
