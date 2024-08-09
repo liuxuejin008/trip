@@ -48,6 +48,7 @@ export function Footer() {
         }
       ]
     },
+    
     {
       title: 'Company',
       list: [
