@@ -21,10 +21,13 @@ export function Auth0Provider({ children }: {
     <Auth0ProviderPrimitive
       domain={domain}
       clientId={clientId}
+      useRefreshTokens
+      cacheLocation='localstorage'
+      useRefreshTokensFallback={false}
       authorizationParams={{
         audience: audience,
         redirect_uri: redirectUri,
-        scope: 'read:current_user openid profile email offline_access'
+        scope: 'read:current_user openid profile email offline_access',
       }}
       onRedirectCallback={onRedirectCallback}
     >
