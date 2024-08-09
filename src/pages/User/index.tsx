@@ -1,6 +1,5 @@
 // import Header from './Header'
 import Main from './Main'
-import Footer from '@/components/Footer/index_backup'
 import { useEffect } from 'react'
 
 export default function User() {
@@ -22,7 +21,6 @@ export default function User() {
     <>
       {/* <Header /> */}
       <Main />
-      <Footer />
     </>
   )
 }

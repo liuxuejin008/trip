@@ -4,7 +4,6 @@ import Actions from './Actions'
 import CardList from './CardList'
 import Rate from './Rate'
 import ShareButton from './ShareButton'
-import Footer from '@/components/Footer/index_backup'
 import type { TravelResult } from '@/services/travel'
 
 type ResultProps = {
@@ -35,7 +34,6 @@ export default function Result(props: ResultProps) {
           <ShareButton/>
         </div>
       </div>
-      <Footer />
     </>
   )
 }
