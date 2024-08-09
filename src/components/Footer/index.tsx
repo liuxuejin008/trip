@@ -23,101 +23,73 @@ export function Footer() {
   // const { t } = useTranslation()
   const links = [
     {
-      title: 'AI 工具链',
+      title: 'AI Nav',
       list: [
         {
           title: 'Woy AI Tools',
           href: 'https://woy.ai/',
         },
         {
-          title: 'AI生成文字图片',
-          href: '#'
+          title: 'AI Tool Center',
+          href: 'https://aitoolcenter.com/'
         },
         {
-          title: 'AI特征生成器',
-          href: '#'
-        },
-        {
-          title: 'AI FAQ 生成器',
-          href: '#'
-        },
-        {
-          title: 'AI推荐生成器',
+          title: 'Google',
           href: '#'
         }
       ]
     },
     {
-      title: 'AI 工具',
+      title: 'Extra tools & features',
       list: [
         {
-          title: 'woy',
-          href: 'https://woy.ai/',
-        },
+          title: 'outfits-gpt',
+          href: 'https://www.outfits-gpt.com/',
+        }
+      ]
+    },
+    {
+      title: 'Company',
+      list: [
         {
-          title: 'AI生成文字图片',
+          title: 'About',
           href: '#'
         },
         {
-          title: 'AI特征生成器',
+          title: 'Team',
           href: '#'
         },
         {
-          title: 'AI FAQ 生成器',
+          title: 'Contact us',
           href: '#'
         },
         {
-          title: 'AI推荐生成器',
+          title: 'Contact us',
           href: '#'
         }
       ]
     },
     {
-      title: 'AI 连接',
+      title: 'Social',
       list: [
         {
-          title: 'AI在线抠图',
+          title: 'Twitter',
           href: '#'
         },
         {
-          title: 'AI生成文字图片',
+          title: 'Youtube',
           href: '#'
         },
         {
-          title: 'AI特征生成器',
+          title: 'Instagram',
           href: '#'
         },
         {
-          title: 'AI FAQ 生成器',
+          title: 'Facebook',
           href: '#'
         },
         {
-          title: 'AI推荐生成器',
-          href: '#'
-        }
-      ]
-    },
-    {
-      title: '网站导航',
-      list: [
-        {
-          title: 'AI在线抠图',
-          href: '#'
-        },
-        {
-          title: 'AI生成文字图片',
-          href: '#'
-        },
-        {
-          title: 'AI特征生成器',
-          href: '#'
-        },
-        {
-          title: 'AI FAQ 生成器',
-          href: '#'
-        },
-        {
-          title: 'AI推荐生成器',
+          title: 'Linkedin',
           href: '#'
         }
       ]
